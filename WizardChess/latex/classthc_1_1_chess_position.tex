@@ -1,0 +1,123 @@
+\hypertarget{classthc_1_1_chess_position}{}\doxysection{thc\+::Chess\+Position Class Reference}
+\label{classthc_1_1_chess_position}\index{thc::ChessPosition@{thc::ChessPosition}}
+Inheritance diagram for thc\+::Chess\+Position\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=4.000000cm]{classthc_1_1_chess_position}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classthc_1_1_chess_position_abfa9d0658b8894682afb8330cadad9d4}\label{classthc_1_1_chess_position_abfa9d0658b8894682afb8330cadad9d4}} 
+void {\bfseries Init} ()
+\item 
+\mbox{\Hypertarget{classthc_1_1_chess_position_a015ad565d8a4b501b62b296450a46906}\label{classthc_1_1_chess_position_a015ad565d8a4b501b62b296450a46906}} 
+{\bfseries Chess\+Position} (const \mbox{\hyperlink{classthc_1_1_chess_position}{Chess\+Position}} \&src)=default
+\item 
+\mbox{\Hypertarget{classthc_1_1_chess_position_a63749d8ba02b67c6a5dde428f3fd9c57}\label{classthc_1_1_chess_position_a63749d8ba02b67c6a5dde428f3fd9c57}} 
+\mbox{\hyperlink{classthc_1_1_chess_position}{Chess\+Position}} \& {\bfseries operator=} (const \mbox{\hyperlink{classthc_1_1_chess_position}{Chess\+Position}} \&src)=default
+\item 
+\mbox{\Hypertarget{classthc_1_1_chess_position_a8b3f27d6b1021ec9bf4df8866bdb4da8}\label{classthc_1_1_chess_position_a8b3f27d6b1021ec9bf4df8866bdb4da8}} 
+bool {\bfseries operator==} (const \mbox{\hyperlink{classthc_1_1_chess_position}{Chess\+Position}} \&other) const
+\item 
+\mbox{\Hypertarget{classthc_1_1_chess_position_a81292c1cda99c1ebe7a92ff7af019faa}\label{classthc_1_1_chess_position_a81292c1cda99c1ebe7a92ff7af019faa}} 
+bool {\bfseries operator$<$} (const \mbox{\hyperlink{classthc_1_1_chess_position}{Chess\+Position}} \&other) const
+\item 
+\mbox{\Hypertarget{classthc_1_1_chess_position_a03241f898da875bee9635127af643d27}\label{classthc_1_1_chess_position_a03241f898da875bee9635127af643d27}} 
+bool {\bfseries operator!=} (const \mbox{\hyperlink{classthc_1_1_chess_position}{Chess\+Position}} \&other) const
+\item 
+\mbox{\Hypertarget{classthc_1_1_chess_position_ac93e6d816bc59768ad583c4ff9aa318b}\label{classthc_1_1_chess_position_ac93e6d816bc59768ad583c4ff9aa318b}} 
+Square {\bfseries groomed\+\_\+enpassant\+\_\+target} () const
+\item 
+\mbox{\Hypertarget{classthc_1_1_chess_position_ad9ba78f38e1f7c1fb77cd5e544433046}\label{classthc_1_1_chess_position_ad9ba78f38e1f7c1fb77cd5e544433046}} 
+bool {\bfseries wking\+\_\+allowed} () const
+\item 
+\mbox{\Hypertarget{classthc_1_1_chess_position_a182bf9bdec0e995ea9915387b682ea08}\label{classthc_1_1_chess_position_a182bf9bdec0e995ea9915387b682ea08}} 
+bool {\bfseries wqueen\+\_\+allowed} () const
+\item 
+\mbox{\Hypertarget{classthc_1_1_chess_position_a85c2ec83b822058b48515fa3329c333c}\label{classthc_1_1_chess_position_a85c2ec83b822058b48515fa3329c333c}} 
+bool {\bfseries bking\+\_\+allowed} () const
+\item 
+\mbox{\Hypertarget{classthc_1_1_chess_position_a4807b12d19f3284482c075dae4ab08f7}\label{classthc_1_1_chess_position_a4807b12d19f3284482c075dae4ab08f7}} 
+bool {\bfseries bqueen\+\_\+allowed} () const
+\item 
+\mbox{\Hypertarget{classthc_1_1_chess_position_a73fb9de33087a482075a50570e2e330a}\label{classthc_1_1_chess_position_a73fb9de33087a482075a50570e2e330a}} 
+bool {\bfseries Cmp\+Strict} (const \mbox{\hyperlink{classthc_1_1_chess_position}{Chess\+Position}} \&other) const
+\item 
+\mbox{\Hypertarget{classthc_1_1_chess_position_a6f34cdaa37e5441d0b6b503d40b45e5a}\label{classthc_1_1_chess_position_a6f34cdaa37e5441d0b6b503d40b45e5a}} 
+std\+::string {\bfseries To\+Debug\+Str} (const char $\ast$label=0)
+\item 
+\mbox{\Hypertarget{classthc_1_1_chess_position_a78d0935962cbfbd2c6422fcd9e34f667}\label{classthc_1_1_chess_position_a78d0935962cbfbd2c6422fcd9e34f667}} 
+virtual bool {\bfseries Forsyth} (const char $\ast$txt)
+\item 
+\mbox{\Hypertarget{classthc_1_1_chess_position_a8d4eae4b30c6b8ae39ec024d2fb0c525}\label{classthc_1_1_chess_position_a8d4eae4b30c6b8ae39ec024d2fb0c525}} 
+std\+::string {\bfseries Forsyth\+Publish} ()
+\item 
+\mbox{\Hypertarget{classthc_1_1_chess_position_a0a91bc5c688ba658f731c15609d07388}\label{classthc_1_1_chess_position_a0a91bc5c688ba658f731c15609d07388}} 
+unsigned short {\bfseries Compress} (\mbox{\hyperlink{unionthc_1_1_compressed_position}{Compressed\+Position}} \&dst) const
+\item 
+\mbox{\Hypertarget{classthc_1_1_chess_position_ac97849c00a607b2e91d3451a77190c15}\label{classthc_1_1_chess_position_ac97849c00a607b2e91d3451a77190c15}} 
+void {\bfseries Decompress} (const \mbox{\hyperlink{unionthc_1_1_compressed_position}{Compressed\+Position}} \&src)
+\item 
+\mbox{\Hypertarget{classthc_1_1_chess_position_a8d3b66b1920a77c91543306cfa0dea19}\label{classthc_1_1_chess_position_a8d3b66b1920a77c91543306cfa0dea19}} 
+uint32\+\_\+t {\bfseries Hash\+Calculate} ()
+\item 
+\mbox{\Hypertarget{classthc_1_1_chess_position_af47b5c4ebe2901ec9c6dc1d1006667a8}\label{classthc_1_1_chess_position_af47b5c4ebe2901ec9c6dc1d1006667a8}} 
+uint32\+\_\+t {\bfseries Hash\+Update} (uint32\+\_\+t hash\+\_\+in, \mbox{\hyperlink{classthc_1_1_move}{Move}} move)
+\item 
+\mbox{\Hypertarget{classthc_1_1_chess_position_aef655d4669c40eceaebcf00cb1cb9fe2}\label{classthc_1_1_chess_position_aef655d4669c40eceaebcf00cb1cb9fe2}} 
+uint64\+\_\+t {\bfseries Hash64\+Calculate} ()
+\item 
+\mbox{\Hypertarget{classthc_1_1_chess_position_af710dde3b8e115177b9e99aa2489eca0}\label{classthc_1_1_chess_position_af710dde3b8e115177b9e99aa2489eca0}} 
+uint64\+\_\+t {\bfseries Hash64\+Update} (uint64\+\_\+t hash\+\_\+in, \mbox{\hyperlink{classthc_1_1_move}{Move}} move)
+\item 
+\mbox{\Hypertarget{classthc_1_1_chess_position_a464971c60639c54c935f87d9ec125c39}\label{classthc_1_1_chess_position_a464971c60639c54c935f87d9ec125c39}} 
+bool {\bfseries White\+To\+Play} () const
+\item 
+\mbox{\Hypertarget{classthc_1_1_chess_position_af19ef93584a639a8d6c9858bbd902d24}\label{classthc_1_1_chess_position_af19ef93584a639a8d6c9858bbd902d24}} 
+void {\bfseries Toggle} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+\doxysubsubsection*{Public Attributes inherited from \mbox{\hyperlink{structthc_1_1_chess_position_raw}{thc\+::\+Chess\+Position\+Raw}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structthc_1_1_chess_position_raw_a1f35fa85cce18683b384188861490c53}\label{structthc_1_1_chess_position_raw_a1f35fa85cce18683b384188861490c53}} 
+bool {\bfseries white}
+\item 
+\mbox{\Hypertarget{structthc_1_1_chess_position_raw_ad6f938f073ba78f351ad99d5c63c2599}\label{structthc_1_1_chess_position_raw_ad6f938f073ba78f351ad99d5c63c2599}} 
+char {\bfseries squares} \mbox{[}64+1\mbox{]}
+\item 
+\mbox{\Hypertarget{structthc_1_1_chess_position_raw_afc33b564b601dcbe9515ace56a75a6f2}\label{structthc_1_1_chess_position_raw_afc33b564b601dcbe9515ace56a75a6f2}} 
+int {\bfseries half\+\_\+move\+\_\+clock}
+\item 
+\mbox{\Hypertarget{structthc_1_1_chess_position_raw_a4a6de55931e5e54f6433c255c514fca2}\label{structthc_1_1_chess_position_raw_a4a6de55931e5e54f6433c255c514fca2}} 
+int {\bfseries full\+\_\+move\+\_\+count}
+\item 
+\mbox{\Hypertarget{structthc_1_1_chess_position_raw_aebd1fb7ecc904fb10eb9b48cadb81b3b}\label{structthc_1_1_chess_position_raw_aebd1fb7ecc904fb10eb9b48cadb81b3b}} 
+Square {\bfseries enpassant\+\_\+target}\+: 8
+\item 
+\mbox{\Hypertarget{structthc_1_1_chess_position_raw_ae5cd79bde48a86e230ab8025df9e3167}\label{structthc_1_1_chess_position_raw_ae5cd79bde48a86e230ab8025df9e3167}} 
+Square {\bfseries wking\+\_\+square}\+: 8
+\item 
+\mbox{\Hypertarget{structthc_1_1_chess_position_raw_ab32bc4046caed10843857ea9eef9edf8}\label{structthc_1_1_chess_position_raw_ab32bc4046caed10843857ea9eef9edf8}} 
+Square {\bfseries bking\+\_\+square}\+: 8
+\item 
+\mbox{\Hypertarget{structthc_1_1_chess_position_raw_aa2c2358cdd35ad9f98354af6ab871a21}\label{structthc_1_1_chess_position_raw_aa2c2358cdd35ad9f98354af6ab871a21}} 
+unsigned int {\bfseries wking}\+: 1
+\item 
+\mbox{\Hypertarget{structthc_1_1_chess_position_raw_a0fa225683424d7a93117045a41b705a8}\label{structthc_1_1_chess_position_raw_a0fa225683424d7a93117045a41b705a8}} 
+unsigned int {\bfseries wqueen}\+: 1
+\item 
+\mbox{\Hypertarget{structthc_1_1_chess_position_raw_a79ced461381a56c11fbc7ffc2403f10c}\label{structthc_1_1_chess_position_raw_a79ced461381a56c11fbc7ffc2403f10c}} 
+unsigned int {\bfseries bking}\+: 1
+\item 
+\mbox{\Hypertarget{structthc_1_1_chess_position_raw_a43bf7129399414bf1310f62f1a6912d2}\label{structthc_1_1_chess_position_raw_a43bf7129399414bf1310f62f1a6912d2}} 
+unsigned int {\bfseries bqueen}\+: 1
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Wizard\+Chess/lib/board/thc.\+h\item 
+Wizard\+Chess/lib/board/thc.\+cpp\end{DoxyCompactItemize}

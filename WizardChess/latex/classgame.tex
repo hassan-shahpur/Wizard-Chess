@@ -1,0 +1,110 @@
+\hypertarget{classgame}{}\doxysection{game Class Reference}
+\label{classgame}\index{game@{game}}
+
+
+Controls and starts the game.  
+
+
+
+
+{\ttfamily \#include $<$game.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classgame_ad6f024b73cac5928fd3cd3e464d5afd3}{game}} (bool verbose)
+\begin{DoxyCompactList}\small\item\em Controls and starts the game. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classgame_a15dd3a05d7e98d2e7ab4634e5d5fe39c}{start\+\_\+game}} ()
+\begin{DoxyCompactList}\small\item\em starts the game \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classgame_ae55eda9e3999756e82dabe6168514bfa}{get\+\_\+number\+\_\+of\+\_\+moves}} () const
+\begin{DoxyCompactList}\small\item\em number of moves getter \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classgame_aaebd002a3516e3c03caaf2658b905075}\label{classgame_aaebd002a3516e3c03caaf2658b905075}} 
+bool {\bfseries verbose}
+\item 
+\mbox{\Hypertarget{classgame_ac6a4145318afcd2178e0548be6190e67}\label{classgame_ac6a4145318afcd2178e0548be6190e67}} 
+bool {\bfseries player\+\_\+is\+\_\+white} \{\}
+\item 
+\mbox{\Hypertarget{classgame_a32311a20edeb02a0b15a76ed16f31374}\label{classgame_a32311a20edeb02a0b15a76ed16f31374}} 
+\mbox{\hyperlink{classboard}{board}} {\bfseries chess\+\_\+board} = \mbox{\hyperlink{classboard}{board}}(true)
+\item 
+\mbox{\Hypertarget{classgame_a4f4757ca4e1e15dca3b6d0103ae72639}\label{classgame_a4f4757ca4e1e15dca3b6d0103ae72639}} 
+int {\bfseries move\+\_\+number}
+\item 
+\mbox{\Hypertarget{classgame_a92622edd00b08bdd5d0f58e33abf391e}\label{classgame_a92622edd00b08bdd5d0f58e33abf391e}} 
+\mbox{\hyperlink{classsteppers}{steppers}} {\bfseries stepper} = \mbox{\hyperlink{classsteppers}{steppers}}(false)
+\item 
+\mbox{\Hypertarget{classgame_a24030b3cc83354baccbdbaa1e24508d0}\label{classgame_a24030b3cc83354baccbdbaa1e24508d0}} 
+std\+::vector$<$ std\+::string $>$ {\bfseries move\+\_\+sequence}
+\item 
+\mbox{\Hypertarget{classgame_a9fd125e038ba086742514c2c80f4dc3a}\label{classgame_a9fd125e038ba086742514c2c80f4dc3a}} 
+int {\bfseries turn}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Controls and starts the game. 
+
+Initialize the game and stats related to it, starts the game and start and register both players moves \begin{DoxyAuthor}{Authors}
+
+\end{DoxyAuthor}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classgame_ad6f024b73cac5928fd3cd3e464d5afd3}\label{classgame_ad6f024b73cac5928fd3cd3e464d5afd3}} 
+\index{game@{game}!game@{game}}
+\index{game@{game}!game@{game}}
+\doxysubsubsection{\texorpdfstring{game()}{game()}}
+{\footnotesize\ttfamily game\+::game (\begin{DoxyParamCaption}\item[{bool}]{verbose }\end{DoxyParamCaption})}
+
+
+
+Controls and starts the game. 
+
+Initialize the game and stats related to it, starts the game and start and register both players moves \begin{DoxyAuthor}{Authors}
+
+\end{DoxyAuthor}
+Creates and initalize game object
+
+Sets verbose, which side player is on, the sequence of moves, the move counter, and turn counter. 
+\begin{DoxyParams}{Parameters}
+{\em Bool} & verbose, for debugging, displays additional information \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classgame_ae55eda9e3999756e82dabe6168514bfa}\label{classgame_ae55eda9e3999756e82dabe6168514bfa}} 
+\index{game@{game}!get\_number\_of\_moves@{get\_number\_of\_moves}}
+\index{get\_number\_of\_moves@{get\_number\_of\_moves}!game@{game}}
+\doxysubsubsection{\texorpdfstring{get\_number\_of\_moves()}{get\_number\_of\_moves()}}
+{\footnotesize\ttfamily int game\+::get\+\_\+number\+\_\+of\+\_\+moves (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+number of moves getter 
+
+Gives number of moves \begin{DoxyReturn}{Returns}
+Number of moves 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classgame_a15dd3a05d7e98d2e7ab4634e5d5fe39c}\label{classgame_a15dd3a05d7e98d2e7ab4634e5d5fe39c}} 
+\index{game@{game}!start\_game@{start\_game}}
+\index{start\_game@{start\_game}!game@{game}}
+\doxysubsubsection{\texorpdfstring{start\_game()}{start\_game()}}
+{\footnotesize\ttfamily int game\+::start\+\_\+game (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+starts the game 
+
+Starts the game by settung the game id, verify starting position, make both players moves. \begin{DoxyReturn}{Returns}
+1 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Wizard\+Chess/lib/game/game.\+hpp\item 
+Wizard\+Chess/lib/game/game.\+cpp\end{DoxyCompactItemize}

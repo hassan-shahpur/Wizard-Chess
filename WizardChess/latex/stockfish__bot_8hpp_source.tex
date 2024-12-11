@@ -1,0 +1,46 @@
+\hypertarget{stockfish__bot_8hpp_source}{}\doxysection{stockfish\+\_\+bot.\+hpp}
+\label{stockfish__bot_8hpp_source}\index{WizardChess/chess\_bot/stockfish\_bot.hpp@{WizardChess/chess\_bot/stockfish\_bot.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ STOCKFISH\_BOT\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ STOCKFISH\_BOT\_H}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <sys/types.h>}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classstockfish__bot}{stockfish\_bot}}\ \{}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \ \ \ \ std::string\ stockfishPath;}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keywordtype}{int}\ depth;}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keywordtype}{int}\ inputFd;}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordtype}{int}\ outputFd;}
+\DoxyCodeLine{00023\ \ \ \ \ pid\_t\ stockfishPID;}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordtype}{bool}\ isRunning;}
+\DoxyCodeLine{00025\ \ \ \ \ std::vector<std::string>\ move\_sequence;}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00028\ \ \ \ \ }
+\DoxyCodeLine{00029\ \ \ \ \ \mbox{\hyperlink{classstockfish__bot}{stockfish\_bot}}(std::string\ path,\ \textcolor{keywordtype}{int}\ depth);}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classstockfish__bot_a9190d0691a7c8dcf8df52645aa04b8bb}{start}}();}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classstockfish__bot_a00c4759fff2beac04ffc6d20735acd8d}{stop}}();}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \ \ std::vector<std::string>\ \mbox{\hyperlink{classstockfish__bot_a9cb06f52d2fe9dfdb50b9a33fe28191b}{sendCommand}}(std::string\ command);}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classstockfish__bot_a8492172fad10b1db2a8ac740065246e8}{getDepth}}();}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \ \ \ \ std::vector<std::string>\ \mbox{\hyperlink{classstockfish__bot_a38a6bd96f052a901a2e5e0ad2d15065b}{getMoveSequence}}();}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classstockfish__bot_a3aba2cdbeaaca42f3ce54c120aa31d06}{addMove}}(std::string\ move);}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \ \ \ \ \mbox{\hyperlink{classstockfish__bot_a72e23c52fd9b80451d9dd0350f302094}{\string~stockfish\_bot}}();}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \};}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \textcolor{preprocessor}{\#endif\ }}
+
+\end{DoxyCode}

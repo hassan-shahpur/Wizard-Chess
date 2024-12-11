@@ -1,0 +1,727 @@
+\hypertarget{thc_8h_source}{}\doxysection{thc.\+h}
+\label{thc_8h_source}\index{WizardChess/lib/board/thc.h@{WizardChess/lib/board/thc.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/****************************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ Triple\ Happy\ Chess\ library\ =\ thc\ library}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *\ \ This\ is\ thc\ rendered\ as\ a\ single\ thc.h\ header\ +\ thc.cpp\ source\ file\ to}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ \ avoid\ the\ complications\ of\ libraries\ -\/\ Inspired\ by\ sqlite.c}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *\ \ Author:\ \ Bill\ Forster}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *\ \ License:\ MIT\ license.\ Full\ text\ of\ license\ is\ in\ associated\ file\ LICENSE}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ *\ \ Copyright\ 2010-\/2020,\ Bill\ Forster\ <billforsternz\ at\ gmail\ dot\ com>}}
+\DoxyCodeLine{00009\ \textcolor{comment}{\ ****************************************************************************/}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ \ \ \ thc.h\ The\ basic\ idea\ is\ to\ concatenate\ the\ following\ into\ one\ .h\ file;}}
+\DoxyCodeLine{00013\ \textcolor{comment}{}}
+\DoxyCodeLine{00014\ \textcolor{comment}{\ \ \ \ \ \ \ \ ChessDefs.h}}
+\DoxyCodeLine{00015\ \textcolor{comment}{\ \ \ \ \ \ \ \ Move.h}}
+\DoxyCodeLine{00016\ \textcolor{comment}{\ \ \ \ \ \ \ \ ChessPositionRaw.h}}
+\DoxyCodeLine{00017\ \textcolor{comment}{\ \ \ \ \ \ \ \ ChessPosition.h}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ \ \ \ \ \ \ \ ChessRules.h}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ \ \ \ \ \ \ \ ChessEvaluation.h}}
+\DoxyCodeLine{00020\ \textcolor{comment}{}}
+\DoxyCodeLine{00021\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#include\ <stddef.h>}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#include\ <stdint.h>}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#include\ <string.h>}}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00028\ \textcolor{comment}{/****************************************************************************}}
+\DoxyCodeLine{00029\ \textcolor{comment}{\ *\ Chessdefs.h\ Chess\ classes\ -\/\ Common\ definitions}}
+\DoxyCodeLine{00030\ \textcolor{comment}{\ *\ \ Author:\ \ Bill\ Forster}}
+\DoxyCodeLine{00031\ \textcolor{comment}{\ *\ \ License:\ MIT\ license.\ Full\ text\ of\ license\ is\ in\ associated\ file\ LICENSE}}
+\DoxyCodeLine{00032\ \textcolor{comment}{\ *\ \ Copyright\ 2010-\/2020,\ Bill\ Forster\ <billforsternz\ at\ gmail\ dot\ com>}}
+\DoxyCodeLine{00033\ \textcolor{comment}{\ ****************************************************************************/}}
+\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#ifndef\ CHESSDEFS\_H}}
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#define\ CHESSDEFS\_H}}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \textcolor{comment}{//\ Simple\ definition\ to\ aid\ platform\ portability\ (only\ remains\ of\ former\ Portability.h)}}
+\DoxyCodeLine{00038\ \textcolor{keywordtype}{int}\ strcmp\_ignore(\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *s,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *t\ );\ \textcolor{comment}{//\ return\ 0\ if\ case-\/insensitive\ match}}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \textcolor{comment}{//\ Fast\ test\ for\ is\ square\ white\ or\ black.\ Intend\ to\ move\ this\ to\ namespace\ thc\ when\ convenient...}}
+\DoxyCodeLine{00041\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ is\_dark(\ \textcolor{keywordtype}{int}\ sq\ )}
+\DoxyCodeLine{00042\ \{}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordtype}{bool}\ dark\ =\ (!(sq\&8)\ \&\&\ \ (sq\&1))\ \ \ \ \textcolor{comment}{//\ eg\ (a8,b8,c8...h8)\ \&\&\ (b8|d8|f8|h8)\ odd\ rank\ +\ odd\ file}}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ||\ (\ (sq\&8)\ \&\&\ !(sq\&1));\ \ \ \textcolor{comment}{//\ eg\ (a7,b7,c7...h7)\ \&\&\ (a7|c7|e7|g7)\ even\ rank\ +\ even\ file}}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordflow}{return}\ dark;}
+\DoxyCodeLine{00046\ \}}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \textcolor{comment}{//\ TripleHappyChess}}
+\DoxyCodeLine{00049\ \textcolor{keyword}{namespace\ }thc}
+\DoxyCodeLine{00050\ \{}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \textcolor{comment}{//\ Use\ the\ most\ natural\ square\ convention\ possible;\ Define\ Square\ to}}
+\DoxyCodeLine{00053\ \textcolor{comment}{//\ \ correspond\ to\ a\ conventionally\ oriented\ chess\ diagram;\ Top\ left\ corner}}
+\DoxyCodeLine{00054\ \textcolor{comment}{//\ \ (square\ a8)\ is\ 0,\ bottom\ right\ corner\ (square\ h1)\ is\ 63.}}
+\DoxyCodeLine{00055\ \textcolor{comment}{//\ Note\ that\ instead\ of\ defining\ a\ special\ piece\ type,\ we\ use\ the\ built-\/in}}
+\DoxyCodeLine{00056\ \textcolor{comment}{//\ \ char\ type,\ with\ 'N'=white\ knight,\ 'b'=black\ bishop\ etc.\ and\ '\ '=an}}
+\DoxyCodeLine{00057\ \textcolor{comment}{//\ \ empty\ square.}}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keyword}{enum}\ Square}
+\DoxyCodeLine{00059\ \ \ \ \ \{}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ a8=0,}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ b8,\ c8,\ d8,\ e8,\ f8,\ g8,\ h8,}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ a7,\ b7,\ c7,\ d7,\ e7,\ f7,\ g7,\ h7,}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ a6,\ b6,\ c6,\ d6,\ e6,\ f6,\ g6,\ h6,}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ a5,\ b5,\ c5,\ d5,\ e5,\ f5,\ g5,\ h5,}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ a4,\ b4,\ c4,\ d4,\ e4,\ f4,\ g4,\ h4,}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ a3,\ b3,\ c3,\ d3,\ e3,\ f3,\ g3,\ h3,}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ a2,\ b2,\ c2,\ d2,\ e2,\ f2,\ g2,\ h2,}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ a1,\ b1,\ c1,\ d1,\ e1,\ f1,\ g1,\ h1,}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ SQUARE\_INVALID}
+\DoxyCodeLine{00070\ \ \ \ \ \};}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \textcolor{comment}{//\ thc::Square\ utilities}}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{char}\ get\_file(\ Square\ sq\ )}
+\DoxyCodeLine{00074\ \ \ \ \ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{char}\textcolor{keyword}{>}\ (\ \ (\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(sq)\&0x07)\ +\ \textcolor{charliteral}{'a'}\ );\ \}\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ eg\ c5-\/>'c'}}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{char}\ get\_rank(\ Square\ sq\ )}
+\DoxyCodeLine{00076\ \ \ \ \ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{char}\textcolor{keyword}{>}\ (\ \ \textcolor{charliteral}{'8'}\ -\/\ ((\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(sq)>>3)\ \&\ 0x07)\ );\ \}\ \ \ \ \textcolor{comment}{//\ eg\ c5-\/>'5'}}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keyword}{inline}\ Square\ make\_square(\ \textcolor{keywordtype}{char}\ file,\ \textcolor{keywordtype}{char}\ rank\ )}
+\DoxyCodeLine{00078\ \ \ \ \ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}Square\textcolor{keyword}{>}\ (\ (\textcolor{charliteral}{'8'}-\/(rank))*8\ +\ ((file)-\/\textcolor{charliteral}{'a'})\ );\ \ \}\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ eg\ ('c','5')\ -\/>\ c5}}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ \textcolor{comment}{//\ Special\ (i.e.\ not\ ordinary)\ move\ types}}
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keyword}{enum}\ SPECIAL}
+\DoxyCodeLine{00082\ \ \ \ \ \{}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ NOT\_SPECIAL\ =\ 0,}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ SPECIAL\_KING\_MOVE,\ \ \ \ \ \textcolor{comment}{//\ special\ only\ because\ it\ changes\ wking\_square,\ bking\_square}}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ SPECIAL\_WK\_CASTLING,}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ SPECIAL\_BK\_CASTLING,}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ SPECIAL\_WQ\_CASTLING,}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ SPECIAL\_BQ\_CASTLING,}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ SPECIAL\_PROMOTION\_QUEEN,}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ SPECIAL\_PROMOTION\_ROOK,}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ SPECIAL\_PROMOTION\_BISHOP,}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ SPECIAL\_PROMOTION\_KNIGHT,}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ SPECIAL\_WPAWN\_2SQUARES,}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ SPECIAL\_BPAWN\_2SQUARES,}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ SPECIAL\_WEN\_PASSANT,}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ SPECIAL\_BEN\_PASSANT,}
+\DoxyCodeLine{00097\ \ \ \ \ \};}
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00099\ \textcolor{comment}{//\ Results\ of\ a\ test\ for\ legal\ position,\ note\ that\ they\ are\ powers}}
+\DoxyCodeLine{00100\ \textcolor{comment}{//\ \ of\ 2,\ allowing\ a\ mask\ of\ reasons}}
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{keyword}{enum}\ ILLEGAL\_REASON}
+\DoxyCodeLine{00102\ \ \ \ \ \{}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ IR\_NULL=0,\ IR\_PAWN\_POSITION=1,\ \textcolor{comment}{//pawns\ on\ 1st\ or\ 8th\ rank}}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ IR\_NOT\_ONE\_KING\_EACH=2,\ IR\_CAN\_TAKE\_KING=4,}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ IR\_WHITE\_TOO\_MANY\_PIECES=8,\ IR\_WHITE\_TOO\_MANY\_PAWNS=16,}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ IR\_BLACK\_TOO\_MANY\_PIECES=32,\ IR\_BLACK\_TOO\_MANY\_PAWNS=64}
+\DoxyCodeLine{00107\ \ \ \ \ \};}
+\DoxyCodeLine{00108\ }
+\DoxyCodeLine{00109\ \textcolor{comment}{//\ Types\ of\ draw\ checked\ by\ IsDraw()}}
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{keyword}{enum}\ DRAWTYPE}
+\DoxyCodeLine{00111\ \ \ \ \ \{}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ NOT\_DRAW,}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ DRAWTYPE\_50MOVE,}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ DRAWTYPE\_INSUFFICIENT,\ \ \ \ \ \ \textcolor{comment}{//\ draw\ if\ superior\ side\ wants\ it}}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ since\ inferior\ side\ has\ insufficient}}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ mating\ material}}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ DRAWTYPE\_INSUFFICIENT\_AUTO,\ \textcolor{comment}{//\ don't\ wait\ to\ be\ asked,\ eg\ draw}}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ immediately\ if\ bare\ kings}}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ DRAWTYPE\_REPITITION,}
+\DoxyCodeLine{00120\ \ \ \ \ \};}
+\DoxyCodeLine{00121\ }
+\DoxyCodeLine{00122\ \textcolor{comment}{//\ Stalemate\ or\ checkmate\ game\ terminations}}
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{keyword}{enum}\ TERMINAL}
+\DoxyCodeLine{00124\ \ \ \ \ \{}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ NOT\_TERMINAL\ =\ 0,}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ TERMINAL\_WCHECKMATE\ =\ -\/1,\ \ \ \textcolor{comment}{//\ White\ is\ checkmated}}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ TERMINAL\_WSTALEMATE\ =\ -\/2,\ \ \ \textcolor{comment}{//\ White\ is\ stalemated}}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ TERMINAL\_BCHECKMATE\ =\ 1,\ \ \ \ \textcolor{comment}{//\ Black\ is\ checkmated}}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ TERMINAL\_BSTALEMATE\ =\ 2\ \ \ \ \ \textcolor{comment}{//\ Black\ is\ stalemated}}
+\DoxyCodeLine{00130\ \ \ \ \ \};}
+\DoxyCodeLine{00131\ }
+\DoxyCodeLine{00132\ \textcolor{comment}{//\ Calculate\ an\ upper\ limit\ to\ the\ length\ of\ a\ list\ of\ moves}}
+\DoxyCodeLine{00133\ \textcolor{preprocessor}{\#define\ MAXMOVES\ (27\ +\ 2*13\ +\ 2*14\ +\ 2*8\ +\ 8\ +\ 8*4\ \ +\ \ 3*27)}}
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{comment}{//[Q\ \ \ 2*B\ \ \ \ 2*R\ \ \ \ 2*N\ \ \ K\ \ \ 8*P]\ +\ \ [3*Q]}}
+\DoxyCodeLine{00135\ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \string^\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \string^}}
+\DoxyCodeLine{00136\ \ \ \ \ \textcolor{comment}{//[calculated\ practical\ maximum\ \ \ ]\ +\ [margin]}}
+\DoxyCodeLine{00137\ }
+\DoxyCodeLine{00138\ \textcolor{comment}{//\ We\ have\ developed\ an\ algorithm\ to\ compress\ any\ legal\ chess\ position,}}
+\DoxyCodeLine{00139\ \textcolor{comment}{//\ \ including\ who\ to\ move,\ castling\ allowed\ flags\ and\ enpassant\_target}}
+\DoxyCodeLine{00140\ \textcolor{comment}{//\ \ into\ 24\ bytes}}
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{keyword}{union\ }\mbox{\hyperlink{unionthc_1_1_compressed_position}{CompressedPosition}}}
+\DoxyCodeLine{00142\ \ \ \ \ \{}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ storage[24];}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ ints[\ 24\ /\ \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{unsigned}\ int)\ ];}
+\DoxyCodeLine{00145\ \ \ \ \ \};}
+\DoxyCodeLine{00146\ }
+\DoxyCodeLine{00147\ \textcolor{comment}{//\ Types\ we'd\ really\ rather\ have\ in\ PrivateChessDefs.h,\ but\ not\ possible}}
+\DoxyCodeLine{00148\ \textcolor{comment}{//\ \ at\ the\ moment,\ so\ we\ reluctantly\ expose\ them\ to\ users\ of\ the\ chess}}
+\DoxyCodeLine{00149\ \textcolor{comment}{//\ \ classes.}}
+\DoxyCodeLine{00150\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ lte;\ \ \ \textcolor{comment}{//\ lte\ =\ lookup\ table\ element}}
+\DoxyCodeLine{00151\ \ \ \ \ \textcolor{keyword}{typedef}\ int32\_t\ DETAIL;}
+\DoxyCodeLine{00152\ }
+\DoxyCodeLine{00153\ \}\ \textcolor{comment}{//namespace\ thc}}
+\DoxyCodeLine{00154\ }
+\DoxyCodeLine{00155\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ CHESSDEFS\_H}}
+\DoxyCodeLine{00156\ \textcolor{comment}{/****************************************************************************}}
+\DoxyCodeLine{00157\ \textcolor{comment}{\ *\ Move.h\ Chess\ classes\ -\/\ Move}}
+\DoxyCodeLine{00158\ \textcolor{comment}{\ *\ \ Author:\ \ Bill\ Forster}}
+\DoxyCodeLine{00159\ \textcolor{comment}{\ *\ \ License:\ MIT\ license.\ Full\ text\ of\ license\ is\ in\ associated\ file\ LICENSE}}
+\DoxyCodeLine{00160\ \textcolor{comment}{\ *\ \ Copyright\ 2010-\/2020,\ Bill\ Forster\ <billforsternz\ at\ gmail\ dot\ com>}}
+\DoxyCodeLine{00161\ \textcolor{comment}{\ ****************************************************************************/}}
+\DoxyCodeLine{00162\ \textcolor{preprocessor}{\#ifndef\ MOVE\_H}}
+\DoxyCodeLine{00163\ \textcolor{preprocessor}{\#define\ MOVE\_H}}
+\DoxyCodeLine{00164\ }
+\DoxyCodeLine{00165\ \textcolor{comment}{//\ TripleHappyChess}}
+\DoxyCodeLine{00166\ \textcolor{keyword}{namespace\ }thc}
+\DoxyCodeLine{00167\ \{}
+\DoxyCodeLine{00168\ \ \ \ \ \textcolor{keyword}{class\ }ChessRules;}
+\DoxyCodeLine{00169\ }
+\DoxyCodeLine{00170\ \textcolor{comment}{//\ Our\ representation\ of\ a\ chess\ move}}
+\DoxyCodeLine{00171\ \textcolor{comment}{//}}
+\DoxyCodeLine{00172\ \textcolor{comment}{//\ Note\ this\ is\ really\ an\ old\ school\ C\ struct,\ designed\ for\ speed}}
+\DoxyCodeLine{00173\ \textcolor{comment}{//\ There\ is\ no\ contructor\ on\ purpose,\ we\ don't\ want\ unnecessary}}
+\DoxyCodeLine{00174\ \textcolor{comment}{//\ contruction\ of\ an\ array\ of\ Moves\ in\ a\ MOVELIST\ when\ we\ are\ running}}
+\DoxyCodeLine{00175\ \textcolor{comment}{//\ the\ fast\ move\ generator.}}
+\DoxyCodeLine{00176\ \textcolor{comment}{//\ The\ default\ assignment\ operator\ (bitwise\ copy)\ is\ ideal.}}
+\DoxyCodeLine{00177\ \textcolor{comment}{//\ We\ define\ bitwise\ ==\ and\ !=\ operators}}
+\DoxyCodeLine{00178\ \textcolor{comment}{//\ At\ one\ time\ we\ had\ 4\ (count\ em,\ 4)\ move\ representations,\ but\ this}}
+\DoxyCodeLine{00179\ \textcolor{comment}{//\ was\ always\ the\ primary\ and\ main\ representation.\ The\ others\ were}}
+\DoxyCodeLine{00180\ \textcolor{comment}{//\ FMOVE\ (16\ bit\ moves),\ NMOVE\ (natural\ string\ representation,\ eg}}
+\DoxyCodeLine{00181\ \textcolor{comment}{//\ "{}Nf3"{})\ and\ TMOVE\ (terse\ string\ representation\ eg\ "{}g1f3"{}).\ When\ I}}
+\DoxyCodeLine{00182\ \textcolor{comment}{//\ realised\ I\ could\ streamline\ an\ IMOVE\ (the\ old\ name\ for\ Move\ =}}
+\DoxyCodeLine{00183\ \textcolor{comment}{//\ internal\ move)\ to\ only\ 32\ bits,\ I\ realised\ I\ could\ live\ without}}
+\DoxyCodeLine{00184\ \textcolor{comment}{//\ FMOVEs\ and\ that\ sparked\ a\ large\ simplification\ exercise.}}
+\DoxyCodeLine{00185\ \textcolor{comment}{//}}
+\DoxyCodeLine{00186\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classthc_1_1_move}{Move}}}
+\DoxyCodeLine{00187\ \ \ \ \ \{}
+\DoxyCodeLine{00188\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Move\ is\ a\ lightweight\ type,\ it\ is\ accomodated\ in\ only\ 32\ bits}}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ Square\ \ src\ \ \ \ \ \ \ :\ 8;}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ Square\ \ dst\ \ \ \ \ \ \ :\ 8;}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ SPECIAL\ special\ \ \ :\ 8;}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \ \ \ \ capture\ \ \ :\ 8;\ \ \ \ \ \ \textcolor{comment}{//\ '\ '\ (empty)\ if\ move\ not\ a\ capture}}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ for\ some\ reason\ Visual\ C++\ 2005\ (at\ least)}}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ blows\ sizeof(Move)\ out\ to\ 64\ bits\ if}}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ capture\ is\ defined\ as\ char\ instead\ of\ int}}
+\DoxyCodeLine{00197\ }
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ operator\ ==(\textcolor{keyword}{const}\ \mbox{\hyperlink{classthc_1_1_move}{Move}}\ \&other)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00199\ \textcolor{keyword}{\ \ \ \ \ \ \ \ }\{}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}(\ *((int32\_t\ *)\textcolor{keyword}{this})\ ==\ *((int32\_t\ *)(\&other))\ );}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00202\ }
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ operator\ !=(\textcolor{keyword}{const}\ \mbox{\hyperlink{classthc_1_1_move}{Move}}\ \&other)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00204\ \textcolor{keyword}{\ \ \ \ \ \ \ \ }\{}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}(\ *((int32\_t\ *)\textcolor{keyword}{this})\ !=\ *((int32\_t\ *)(\&other))\ );}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00207\ }
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Use\ these\ sparingly\ when\ you\ need\ to\ specifically\ mark}}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ a\ move\ as\ not\ yet\ set\ up\ (defined\ when\ we\ got\ rid\ of}}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ 16\ bit\ FMOVEs,\ we\ could\ always\ set\ and\ test\ 0\ with\ those)}}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ Invalid()\ \ \{\ src=a8;\ dst=a8;\ \}}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ Valid()\ \ \ \ \{\ \textcolor{keywordflow}{return}\ src!=a8\ ||\ dst!=a8;\ \}}
+\DoxyCodeLine{00213\ }
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Read\ natural\ string\ move\ eg\ "{}Nf3"{}}}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ return\ bool\ okay}}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ NaturalIn(\ \mbox{\hyperlink{classthc_1_1_chess_rules}{ChessRules}}\ *cr,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *natural\_in\ );}
+\DoxyCodeLine{00217\ }
+\DoxyCodeLine{00218\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Read\ natural\ string\ move\ eg\ "{}Nf3"{}}}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ return\ bool\ okay}}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Fast\ alternative\ for\ known\ good\ input}}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ NaturalInFast(\ \mbox{\hyperlink{classthc_1_1_chess_rules}{ChessRules}}\ *cr,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *natural\_in\ );}
+\DoxyCodeLine{00222\ }
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Read\ terse\ string\ move\ eg\ "{}g1f3"{}}}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ return\ bool\ okay}}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ TerseIn(\ \mbox{\hyperlink{classthc_1_1_chess_rules}{ChessRules}}\ *cr,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *tmove\ );}
+\DoxyCodeLine{00226\ }
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Convert\ to\ natural\ string}}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ eg\ "{}Nf3"{}}}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ \ \ std::string\ NaturalOut(\ \mbox{\hyperlink{classthc_1_1_chess_rules}{ChessRules}}\ *cr\ );}
+\DoxyCodeLine{00230\ }
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Convert\ to\ terse\ string\ eg\ "{}e7e8q"{}}}
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \ \ std::string\ TerseOut();}
+\DoxyCodeLine{00233\ \ \ \ \ \};}
+\DoxyCodeLine{00234\ }
+\DoxyCodeLine{00235\ \textcolor{comment}{//\ List\ of\ moves}}
+\DoxyCodeLine{00236\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structthc_1_1_m_o_v_e_l_i_s_t}{MOVELIST}}}
+\DoxyCodeLine{00237\ \ \ \ \ \{}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ count;\ \ \textcolor{comment}{//\ number\ of\ moves}}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classthc_1_1_move}{Move}}\ moves[MAXMOVES];}
+\DoxyCodeLine{00240\ \ \ \ \ \};}
+\DoxyCodeLine{00241\ }
+\DoxyCodeLine{00242\ \}\ \textcolor{comment}{//namespace\ thc}}
+\DoxyCodeLine{00243\ }
+\DoxyCodeLine{00244\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//MOVE\_H}}
+\DoxyCodeLine{00245\ \textcolor{comment}{/****************************************************************************}}
+\DoxyCodeLine{00246\ \textcolor{comment}{\ *\ ChessPositionRaw.h\ Chess\ classes\ -\/\ A\ raw\ chess\ position,\ could\ be\ used\ as\ a\ C\ style\ POD}}
+\DoxyCodeLine{00247\ \textcolor{comment}{\ *\ \ Author:\ \ Bill\ Forster}}
+\DoxyCodeLine{00248\ \textcolor{comment}{\ *\ \ License:\ MIT\ license.\ Full\ text\ of\ license\ is\ in\ associated\ file\ LICENSE}}
+\DoxyCodeLine{00249\ \textcolor{comment}{\ *\ \ Copyright\ 2010-\/2020,\ Bill\ Forster\ <billforsternz\ at\ gmail\ dot\ com>}}
+\DoxyCodeLine{00250\ \textcolor{comment}{\ ****************************************************************************/}}
+\DoxyCodeLine{00251\ \textcolor{preprocessor}{\#ifndef\ CHESSPOSITIONRAW\_H}}
+\DoxyCodeLine{00252\ \textcolor{preprocessor}{\#define\ CHESSPOSITIONRAW\_H}}
+\DoxyCodeLine{00253\ }
+\DoxyCodeLine{00254\ }
+\DoxyCodeLine{00255\ \textcolor{comment}{//\ TripleHappyChess}}
+\DoxyCodeLine{00256\ \textcolor{keyword}{namespace\ }thc}
+\DoxyCodeLine{00257\ \{}
+\DoxyCodeLine{00258\ }
+\DoxyCodeLine{00259\ \textcolor{comment}{//\ ChessPositionRaw\ -\/\ A\ complete\ representation\ of\ the\ position\ on\ the}}
+\DoxyCodeLine{00260\ \textcolor{comment}{//\ \ board.\ Corresponds\ broadly\ to\ fields\ of\ Forsyth\ representation}}
+\DoxyCodeLine{00261\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structthc_1_1_chess_position_raw}{ChessPositionRaw}}}
+\DoxyCodeLine{00262\ \ \ \ \ \{}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Who\ to\ play}}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ white;}
+\DoxyCodeLine{00265\ }
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Pieces\ on\ board\ in\ readable\ form;\ Forsyth\ like\ but\ without\ compression,}}
+\DoxyCodeLine{00267\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ eg\ "{}rnbqkbnr"{}}}
+\DoxyCodeLine{00268\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ "{}pppppppp"{}}}
+\DoxyCodeLine{00269\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ "{}\ \ \ \ \ \ \ \ "{}}}
+\DoxyCodeLine{00270\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ "{}\ \ \ \ \ \ \ \ "{}}}
+\DoxyCodeLine{00271\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ "{}\ \ \ \ \ \ \ \ "{}}}
+\DoxyCodeLine{00272\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ "{}\ \ \ \ \ \ \ \ "{}}}
+\DoxyCodeLine{00273\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ "{}PPPPPPPP"{}}}
+\DoxyCodeLine{00274\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ "{}RNBQKBNR"{}}}
+\DoxyCodeLine{00275\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ (represents\ starting\ position)}}
+\DoxyCodeLine{00276\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{char}\ squares[64\ +1];\ \textcolor{comment}{//\ +1\ allows\ a\ trailing\ '\(\backslash\)0'}}
+\DoxyCodeLine{00277\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ note\ indexed\ according\ to\ Square\ convention,\ a8=0\ etc.}}
+\DoxyCodeLine{00278\ }
+\DoxyCodeLine{00279\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Half\ moves\ since\ pawn\ move\ or\ capture\ (for\ 50\ move\ rule)}}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ e.g.\ after\ 1.e4\ it's\ 0}}
+\DoxyCodeLine{00281\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \ half\_move\_clock;}
+\DoxyCodeLine{00282\ }
+\DoxyCodeLine{00283\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Full\ move\ count.\ Initially\ 1\ and\ increments\ after\ black\ moves}}
+\DoxyCodeLine{00284\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ e.g.\ after\ 1.e4\ it's\ 1}}
+\DoxyCodeLine{00285\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ e.g.\ after\ 1...\ d6\ it's\ 2}}
+\DoxyCodeLine{00286\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \ full\_move\_count;}
+\DoxyCodeLine{00287\ }
+\DoxyCodeLine{00288\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ The\ following\ are\ deemed\ "{}details"{},\ and\ must\ be\ stored\ at\ the}}
+\DoxyCodeLine{00289\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ end\ of\ the\ structure.\ Search\ for\ DETAIL\ for,\ ahem,\ details.}}
+\DoxyCodeLine{00290\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ For\ performance\ reasons\ we\ want\ the\ details\ to\ be\ able\ to\ fit}}
+\DoxyCodeLine{00291\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ into\ 32\ bits.}}
+\DoxyCodeLine{00292\ \ \ \ \ \ \ \ \ Square\ enpassant\_target\ :\ 8;}
+\DoxyCodeLine{00293\ \ \ \ \ \ \ \ \ Square\ wking\_square\ \ \ \ \ :\ 8;}
+\DoxyCodeLine{00294\ \ \ \ \ \ \ \ \ Square\ bking\_square\ \ \ \ \ :\ 8;}
+\DoxyCodeLine{00295\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ \ wking\ \ \ \ \ :\ 1;\ \ \ \ \textcolor{comment}{//\ Castling\ still\ allowed\ flags}}
+\DoxyCodeLine{00296\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ \ wqueen\ \ \ \ :\ 1;\ \ \ \ \textcolor{comment}{//\ \ unfortunately\ if\ the\ castling}}
+\DoxyCodeLine{00297\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ \ bking\ \ \ \ \ :\ 1;\ \ \ \ \textcolor{comment}{//\ \ flags\ are\ declared\ as\ bool,}}
+\DoxyCodeLine{00298\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ \ bqueen\ \ \ \ :\ 1;\ \ \ \ \textcolor{comment}{//\ \ with\ Visual\ C++\ at\ least,}}
+\DoxyCodeLine{00299\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ the\ details\ blow\ out\ and\ use}}
+\DoxyCodeLine{00300\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ another\ 32\ bits\ (??!!)}}
+\DoxyCodeLine{00301\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Note\ that\ for\ say\ white\ king\ side\ castling\ to\ be\ allowed\ in}}
+\DoxyCodeLine{00302\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ in\ the\ same\ sense\ as\ the\ Forsyth\ representation,\ not\ only}}
+\DoxyCodeLine{00303\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ must\ wking\ be\ true,\ but\ the\ \ white\ king\ and\ king\ rook\ must}}
+\DoxyCodeLine{00304\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ be\ present\ and\ in\ position,\ see\ the\ wking\_allowed()\ etc}}
+\DoxyCodeLine{00305\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ methods\ in\ class\ ChessPosition,\ these\ are\ used\ for\ the\ ChessPosition}}
+\DoxyCodeLine{00306\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ ==\ operator.}}
+\DoxyCodeLine{00307\ \ \ \ \ \};}
+\DoxyCodeLine{00308\ }
+\DoxyCodeLine{00309\ \}\ \textcolor{comment}{//namespace\ thc}}
+\DoxyCodeLine{00310\ }
+\DoxyCodeLine{00311\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//CHESSPOSITIONRAW\_H}}
+\DoxyCodeLine{00312\ \textcolor{comment}{/****************************************************************************}}
+\DoxyCodeLine{00313\ \textcolor{comment}{\ *\ ChessPosition.h\ Chess\ classes\ -\/\ Representation\ of\ the\ position\ on\ the\ board}}
+\DoxyCodeLine{00314\ \textcolor{comment}{\ *\ \ Author:\ \ Bill\ Forster}}
+\DoxyCodeLine{00315\ \textcolor{comment}{\ *\ \ License:\ MIT\ license.\ Full\ text\ of\ license\ is\ in\ associated\ file\ LICENSE}}
+\DoxyCodeLine{00316\ \textcolor{comment}{\ *\ \ Copyright\ 2010-\/2020,\ Bill\ Forster\ <billforsternz\ at\ gmail\ dot\ com>}}
+\DoxyCodeLine{00317\ \textcolor{comment}{\ ****************************************************************************/}}
+\DoxyCodeLine{00318\ \textcolor{preprocessor}{\#ifndef\ CHESSPOSITION\_H}}
+\DoxyCodeLine{00319\ \textcolor{preprocessor}{\#define\ CHESSPOSITION\_H}}
+\DoxyCodeLine{00320\ }
+\DoxyCodeLine{00321\ \textcolor{comment}{//\ TripleHappyChess}}
+\DoxyCodeLine{00322\ \textcolor{keyword}{namespace\ }thc}
+\DoxyCodeLine{00323\ \{}
+\DoxyCodeLine{00324\ \ \ \ \ \textcolor{keyword}{class\ }Move;}
+\DoxyCodeLine{00325\ }
+\DoxyCodeLine{00326\ \textcolor{comment}{//\ ChessPosition\ -\/\ A\ complete\ representation\ of\ the\ position\ on\ the}}
+\DoxyCodeLine{00327\ \textcolor{comment}{//\ \ board.}}
+\DoxyCodeLine{00328\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classthc_1_1_chess_position}{ChessPosition}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{structthc_1_1_chess_position_raw}{ChessPositionRaw}}}
+\DoxyCodeLine{00329\ \ \ \ \ \{}
+\DoxyCodeLine{00330\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00331\ }
+\DoxyCodeLine{00332\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Default\ constructor}}
+\DoxyCodeLine{00333\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classthc_1_1_chess_position}{ChessPosition}}()\ \ \{\ Init();\ \}}
+\DoxyCodeLine{00334\ \ \ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{classthc_1_1_chess_position}{\string~ChessPosition}}()\ \ \{\}\ \ \ \ \textcolor{comment}{//\ destructor\ not\ actually\ needed\ now\ as}}
+\DoxyCodeLine{00335\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ we\ don't\ allocate\ resources\ in\ ctor.}}
+\DoxyCodeLine{00336\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ Init()}
+\DoxyCodeLine{00337\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00338\ \ \ \ \ \ \ \ \ \ \ \ \ white\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00339\ \ \ \ \ \ \ \ \ \ \ \ \ memcpy(\ squares,}
+\DoxyCodeLine{00340\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}rnbqkbnr"{}}}
+\DoxyCodeLine{00341\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}pppppppp"{}}}
+\DoxyCodeLine{00342\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}\ \ \ \ \ \ \ \ "{}}}
+\DoxyCodeLine{00343\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}\ \ \ \ \ \ \ \ "{}}}
+\DoxyCodeLine{00344\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}\ \ \ \ \ \ \ \ "{}}}
+\DoxyCodeLine{00345\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}\ \ \ \ \ \ \ \ "{}}}
+\DoxyCodeLine{00346\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}PPPPPPPP"{}}}
+\DoxyCodeLine{00347\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}RNBQKBNR"{}},\ \textcolor{keyword}{sizeof}(squares)\ );}
+\DoxyCodeLine{00348\ \ \ \ \ \ \ \ \ \ \ \ \ enpassant\_target\ =\ SQUARE\_INVALID;}
+\DoxyCodeLine{00349\ \ \ \ \ \ \ \ \ \ \ \ \ wking\ \ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00350\ \ \ \ \ \ \ \ \ \ \ \ \ wqueen\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00351\ \ \ \ \ \ \ \ \ \ \ \ \ bking\ \ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00352\ \ \ \ \ \ \ \ \ \ \ \ \ bqueen\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00353\ \ \ \ \ \ \ \ \ \ \ \ \ wking\_square\ =\ e1;}
+\DoxyCodeLine{00354\ \ \ \ \ \ \ \ \ \ \ \ \ bking\_square\ =\ e8;}
+\DoxyCodeLine{00355\ \ \ \ \ \ \ \ \ \ \ \ \ half\_move\_clock\ =\ 0;}
+\DoxyCodeLine{00356\ \ \ \ \ \ \ \ \ \ \ \ \ full\_move\_count\ =\ 1;}
+\DoxyCodeLine{00357\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00358\ }
+\DoxyCodeLine{00359\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Copy\ constructor\ and\ Assignment\ operator.\ Defining\ them\ this\ way}}
+\DoxyCodeLine{00360\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ generates\ simple\ bitwise\ memory\ copy,\ which\ is\ exactly\ what\ we}}
+\DoxyCodeLine{00361\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ want\ and\ is\ better\ practice\ than\ the\ old\ memcpy()\ versions\ (which}}
+\DoxyCodeLine{00362\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ copy\ the\ vtable\ ptr\ as\ well\ -\/\ we\ don't\ want\ that).\ Thanks\ to\ Github}}
+\DoxyCodeLine{00363\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ user\ metiscus\ for\ the\ pull\ request\ that\ fixed\ this.}}
+\DoxyCodeLine{00364\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classthc_1_1_chess_position}{ChessPosition}}(\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classthc_1_1_chess_position}{ChessPosition}}\&\ src\ )\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00365\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classthc_1_1_chess_position}{ChessPosition}}\&\ operator=(\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classthc_1_1_chess_position}{ChessPosition}}\&\ src\ )\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00366\ }
+\DoxyCodeLine{00367\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Equality\ operator}}
+\DoxyCodeLine{00368\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ operator\ ==(\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classthc_1_1_chess_position}{ChessPosition}}\ \&other\ )\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00369\ \textcolor{keyword}{\ \ \ \ \ \ \ \ }\{}
+\DoxyCodeLine{00370\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}(\ white\ ==\ other.white\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&\&}
+\DoxyCodeLine{00371\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0\ ==\ memcmp(\ \&squares,\ \&other.squares,\ 64\ )\ \&\&}
+\DoxyCodeLine{00372\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ groomed\_enpassant\_target()\ ==\ other.groomed\_enpassant\_target()\ \ \&\&}
+\DoxyCodeLine{00373\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ wking\_allowed()\ \ ==\ other.wking\_allowed()\ \ \ \&\&}
+\DoxyCodeLine{00374\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ wqueen\_allowed()\ ==\ other.wqueen\_allowed()\ \ \&\&}
+\DoxyCodeLine{00375\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ bking\_allowed()\ \ ==\ other.bking\_allowed()\ \ \ \&\&}
+\DoxyCodeLine{00376\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ bqueen\_allowed()\ ==\ other.bqueen\_allowed()}
+\DoxyCodeLine{00377\ \ \ \ \ \ \ \ \ \ \ \ \ );}
+\DoxyCodeLine{00378\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00379\ }
+\DoxyCodeLine{00380\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ <\ Operator}}
+\DoxyCodeLine{00381\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Why\ do\ we\ want\ this\ elaborate\ operator?\ Well\ if\ we\ ever\ use\ the\ std}}
+\DoxyCodeLine{00382\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ sort\ algorithm\ on\ ChessPosition\ objects\ we\ need\ a\ <\ operator\ with}}
+\DoxyCodeLine{00383\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ the\ following\ properties\ (a\ and\ b\ are\ two\ ChessPositions);}}
+\DoxyCodeLine{00384\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 1)\ if\ a==b\ is\ true\ then\ a<b\ is\ false}}
+\DoxyCodeLine{00385\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 2)\ if\ a<b\ \ is\ true\ then\ b<a\ is\ false}}
+\DoxyCodeLine{00386\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ To\ achieve\ this\ we\ need\ a\ <\ operator\ that\ takes\ into\ account\ all}}
+\DoxyCodeLine{00387\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ the\ factors\ as\ the\ ==\ operator.\ If\ you\ don't\ bother\ and\ use\ any\ old}}
+\DoxyCodeLine{00388\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ deterministic\ function\ (what\ does\ one\ position\ being\ less\ than}}
+\DoxyCodeLine{00389\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ another\ even\ mean?)\ then\ you'll\ get\ subtle\ errors\ in\ your\ sorts}}
+\DoxyCodeLine{00390\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ (the\ voice\ of\ bitter\ experience\ speaks).}}
+\DoxyCodeLine{00391\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ operator\ <(\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classthc_1_1_chess_position}{ChessPosition}}\ \&other\ )\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00392\ \textcolor{keyword}{\ \ \ \ \ \ \ \ }\{}
+\DoxyCodeLine{00393\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ temp\ =\ (white==other.white);}
+\DoxyCodeLine{00394\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ !temp\ )}
+\DoxyCodeLine{00395\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ white;}
+\DoxyCodeLine{00396\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ itemp\ =\ memcmp(\ \&squares,\ \&other.squares,\ 64\ );}
+\DoxyCodeLine{00397\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ itemp\ !=\ 0\ )}
+\DoxyCodeLine{00398\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}(\ itemp\ <\ 0\ );}
+\DoxyCodeLine{00399\ \ \ \ \ \ \ \ \ \ \ \ \ temp\ =\ (groomed\_enpassant\_target()\ ==\ other.groomed\_enpassant\_target());}
+\DoxyCodeLine{00400\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ !temp\ )}
+\DoxyCodeLine{00401\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}(\ (\textcolor{keywordtype}{int})groomed\_enpassant\_target()\ <\ (int)other.groomed\_enpassant\_target()\ );}
+\DoxyCodeLine{00402\ \ \ \ \ \ \ \ \ \ \ \ \ temp\ =\ (wking\_allowed()\ \ ==\ other.wking\_allowed()\ \ );}
+\DoxyCodeLine{00403\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ !temp\ )}
+\DoxyCodeLine{00404\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ wking\_allowed();}
+\DoxyCodeLine{00405\ \ \ \ \ \ \ \ \ \ \ \ \ temp\ =\ (wqueen\_allowed()\ ==\ other.wqueen\_allowed()\ );}
+\DoxyCodeLine{00406\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ !temp\ )}
+\DoxyCodeLine{00407\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ wqueen\_allowed();}
+\DoxyCodeLine{00408\ \ \ \ \ \ \ \ \ \ \ \ \ temp\ =\ (bking\_allowed()\ \ ==\ other.bking\_allowed()\ \ );}
+\DoxyCodeLine{00409\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ !temp\ )}
+\DoxyCodeLine{00410\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ bking\_allowed();}
+\DoxyCodeLine{00411\ \ \ \ \ \ \ \ \ \ \ \ \ temp\ =\ (bqueen\_allowed()\ ==\ other.bqueen\_allowed()\ );}
+\DoxyCodeLine{00412\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ !temp\ )}
+\DoxyCodeLine{00413\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ bqueen\_allowed();}
+\DoxyCodeLine{00414\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \ \ \textcolor{comment}{//\ ==}}
+\DoxyCodeLine{00415\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00416\ }
+\DoxyCodeLine{00417\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Inequality\ operator}}
+\DoxyCodeLine{00418\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ operator\ !=(\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classthc_1_1_chess_position}{ChessPosition}}\ \&other\ )\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00419\ \textcolor{keyword}{\ \ \ \ \ \ \ \ }\{}
+\DoxyCodeLine{00420\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ same\ =\ (*\textcolor{keyword}{this}\ ==\ other);}
+\DoxyCodeLine{00421\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ !same;}
+\DoxyCodeLine{00422\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00423\ }
+\DoxyCodeLine{00424\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Groomed\ enpassant\ target\ is\ enpassant\ target\ qualified\ by\ the\ possibility\ to}}
+\DoxyCodeLine{00425\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ take\ enpassant.\ For\ example\ any\ double\ square\ pawn\ push\ creates\ an}}
+\DoxyCodeLine{00426\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ enpassant\ target,\ but\ a\ groomed\ enpassant\ target\ will\ still\ be\ SQUARE\_INVALID}}
+\DoxyCodeLine{00427\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ unless\ there\ is\ an\ opposition\ pawn\ in\ position\ to\ make\ the\ capture}}
+\DoxyCodeLine{00428\ \ \ \ \ \ \ \ \ Square\ groomed\_enpassant\_target()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00429\ \textcolor{keyword}{\ \ \ \ \ \ \ \ }\{}
+\DoxyCodeLine{00430\ \ \ \ \ \ \ \ \ \ \ \ \ Square\ ret\ =\ SQUARE\_INVALID;}
+\DoxyCodeLine{00431\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ white\ \&\&\ a6<=enpassant\_target\ \&\&\ enpassant\_target<=h6\ )}
+\DoxyCodeLine{00432\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00433\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ zap=\textcolor{keyword}{true};\ \ \textcolor{comment}{//\ zap\ unless\ there\ is\ a\ 'P'\ in\ place}}
+\DoxyCodeLine{00434\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ idx\ =\ enpassant\_target+8;\ \textcolor{comment}{//idx\ =\ SOUTH(enpassant\_target)}}
+\DoxyCodeLine{00435\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ enpassant\_target>a6\ \&\&\ squares[idx-\/1]==\textcolor{charliteral}{'P'}\ )}
+\DoxyCodeLine{00436\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ zap\ =\ \textcolor{keyword}{false};\ \ \ \ \textcolor{comment}{//\ eg\ a5xb6\ ep,\ through\ g5xh6\ ep}}
+\DoxyCodeLine{00437\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ enpassant\_target<h6\ \&\&\ squares[idx+1]==\textcolor{charliteral}{'P'}\ )}
+\DoxyCodeLine{00438\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ zap\ =\ \textcolor{keyword}{false};\ \ \ \ \textcolor{comment}{//\ eg\ b5xa6\ ep,\ through\ h5xg6\ ep}}
+\DoxyCodeLine{00439\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ !zap\ )}
+\DoxyCodeLine{00440\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ret\ =\ enpassant\_target;}
+\DoxyCodeLine{00441\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00442\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(\ !white\ \&\&\ a3<=enpassant\_target\ \&\&\ enpassant\_target<=h3\ )}
+\DoxyCodeLine{00443\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00444\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ zap=\textcolor{keyword}{true};\ \ \textcolor{comment}{//\ zap\ unless\ there\ is\ a\ 'p'\ in\ place}}
+\DoxyCodeLine{00445\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ idx\ =\ enpassant\_target-\/8;\ \textcolor{comment}{//idx\ =\ NORTH(enpassant\_target)}}
+\DoxyCodeLine{00446\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ enpassant\_target>a3\ \&\&\ squares[idx-\/1]==\textcolor{charliteral}{'p'}\ )}
+\DoxyCodeLine{00447\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ zap\ =\ \textcolor{keyword}{false};\ \ \ \ \textcolor{comment}{//\ eg\ a4xb3\ ep,\ through\ g4xh3\ ep}}
+\DoxyCodeLine{00448\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ enpassant\_target<h3\ \&\&\ squares[idx+1]==\textcolor{charliteral}{'p'}\ )}
+\DoxyCodeLine{00449\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ zap\ =\ \textcolor{keyword}{false};\ \ \ \ \textcolor{comment}{//\ eg\ b4xa3\ ep,\ through\ h4xg3\ ep}}
+\DoxyCodeLine{00450\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ !zap\ )}
+\DoxyCodeLine{00451\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ret\ =\ enpassant\_target;}
+\DoxyCodeLine{00452\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00453\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ret;}
+\DoxyCodeLine{00454\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00455\ }
+\DoxyCodeLine{00456\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Castling\ allowed\ ?}}
+\DoxyCodeLine{00457\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ wking\_allowed()\textcolor{keyword}{\ \ const\ }\{\ \textcolor{keywordflow}{return}\ wking\ \ \&\&\ squares[e1]==\textcolor{charliteral}{'K'}\ \&\&\ squares[h1]==\textcolor{charliteral}{'R'};\ \}}
+\DoxyCodeLine{00458\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ wqueen\_allowed()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ wqueen\ \&\&\ squares[e1]==\textcolor{charliteral}{'K'}\ \&\&\ squares[a1]==\textcolor{charliteral}{'R'};\ \}}
+\DoxyCodeLine{00459\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ bking\_allowed()\textcolor{keyword}{\ \ const\ }\{\ \textcolor{keywordflow}{return}\ bking\ \ \&\&\ squares[e8]==\textcolor{charliteral}{'k'}\ \&\&\ squares[h8]==\textcolor{charliteral}{'r'};\ \}}
+\DoxyCodeLine{00460\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ bqueen\_allowed()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ bqueen\ \&\&\ squares[e8]==\textcolor{charliteral}{'k'}\ \&\&\ squares[a8]==\textcolor{charliteral}{'r'};\ \}}
+\DoxyCodeLine{00461\ }
+\DoxyCodeLine{00462\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Return\ true\ if\ Positions\ are\ the\ same\ (including\ counts)}}
+\DoxyCodeLine{00463\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ CmpStrict(\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classthc_1_1_chess_position}{ChessPosition}}\ \&other\ )\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00464\ }
+\DoxyCodeLine{00465\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ For\ debug}}
+\DoxyCodeLine{00466\ \ \ \ \ \ \ \ \ std::string\ ToDebugStr(\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *label\ =\ 0\ );}
+\DoxyCodeLine{00467\ }
+\DoxyCodeLine{00468\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Set\ up\ position\ on\ board\ from\ Forsyth\ string\ with\ extensions}}
+\DoxyCodeLine{00469\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ return\ bool\ okay}}
+\DoxyCodeLine{00470\ \ \ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{bool}\ Forsyth(\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *txt\ );}
+\DoxyCodeLine{00471\ }
+\DoxyCodeLine{00472\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Publish\ chess\ position\ and\ supplementary\ info\ in\ forsyth\ notation}}
+\DoxyCodeLine{00473\ \ \ \ \ \ \ \ \ std::string\ ForsythPublish();}
+\DoxyCodeLine{00474\ }
+\DoxyCodeLine{00475\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Compress\ a\ ChessPosition\ into\ 24\ bytes,\ return\ 16\ bit\ hash}}
+\DoxyCodeLine{00476\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{short}\ Compress(\ \mbox{\hyperlink{unionthc_1_1_compressed_position}{CompressedPosition}}\ \&dst\ )\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00477\ }
+\DoxyCodeLine{00478\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Decompress\ chess\ position}}
+\DoxyCodeLine{00479\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ Decompress(\ \textcolor{keyword}{const}\ \mbox{\hyperlink{unionthc_1_1_compressed_position}{CompressedPosition}}\ \&src\ );}
+\DoxyCodeLine{00480\ }
+\DoxyCodeLine{00481\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Calculate\ a\ hash\ value\ for\ position\ (not\ same\ as\ CompressPosition\ algorithm\ hash)}}
+\DoxyCodeLine{00482\ \ \ \ \ \ \ \ \ uint32\_t\ HashCalculate();}
+\DoxyCodeLine{00483\ }
+\DoxyCodeLine{00484\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Incremental\ hash\ value\ update}}
+\DoxyCodeLine{00485\ \ \ \ \ \ \ \ \ uint32\_t\ HashUpdate(\ uint32\_t\ hash\_in,\ \mbox{\hyperlink{classthc_1_1_move}{Move}}\ move\ );}
+\DoxyCodeLine{00486\ }
+\DoxyCodeLine{00487\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Calculate\ a\ hash\ value\ for\ position\ (64\ bit\ version)}}
+\DoxyCodeLine{00488\ \ \ \ \ \ \ \ \ uint64\_t\ Hash64Calculate();}
+\DoxyCodeLine{00489\ }
+\DoxyCodeLine{00490\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Incremental\ hash\ value\ update\ (64\ bit\ version)}}
+\DoxyCodeLine{00491\ \ \ \ \ \ \ \ \ uint64\_t\ Hash64Update(\ uint64\_t\ hash\_in,\ \mbox{\hyperlink{classthc_1_1_move}{Move}}\ move\ );}
+\DoxyCodeLine{00492\ }
+\DoxyCodeLine{00493\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Who's\ turn\ is\ it\ anyway}}
+\DoxyCodeLine{00494\ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ WhiteToPlay()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ white;\ \}}
+\DoxyCodeLine{00495\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ Toggle()\ \{\ white\ =\ !white;\ \}}
+\DoxyCodeLine{00496\ \ \ \ \ \};}
+\DoxyCodeLine{00497\ }
+\DoxyCodeLine{00498\ \}\ \textcolor{comment}{//namespace\ thc}}
+\DoxyCodeLine{00499\ }
+\DoxyCodeLine{00500\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//CHESSPOSITION\_H}}
+\DoxyCodeLine{00501\ \textcolor{comment}{/****************************************************************************}}
+\DoxyCodeLine{00502\ \textcolor{comment}{\ *\ ChessRules.h\ Chess\ classes\ -\/\ Rules\ of\ chess}}
+\DoxyCodeLine{00503\ \textcolor{comment}{\ *\ \ Author:\ \ Bill\ Forster}}
+\DoxyCodeLine{00504\ \textcolor{comment}{\ *\ \ License:\ MIT\ license.\ Full\ text\ of\ license\ is\ in\ associated\ file\ LICENSE}}
+\DoxyCodeLine{00505\ \textcolor{comment}{\ *\ \ Copyright\ 2010-\/2020,\ Bill\ Forster\ <billforsternz\ at\ gmail\ dot\ com>}}
+\DoxyCodeLine{00506\ \textcolor{comment}{\ ****************************************************************************/}}
+\DoxyCodeLine{00507\ \textcolor{preprocessor}{\#ifndef\ CHESSRULES\_H}}
+\DoxyCodeLine{00508\ \textcolor{preprocessor}{\#define\ CHESSRULES\_H}}
+\DoxyCodeLine{00509\ }
+\DoxyCodeLine{00510\ \textcolor{comment}{//\ TripleHappyChess}}
+\DoxyCodeLine{00511\ \textcolor{keyword}{namespace\ }thc}
+\DoxyCodeLine{00512\ \{}
+\DoxyCodeLine{00513\ }
+\DoxyCodeLine{00514\ \textcolor{comment}{//\ Class\ encapsulates\ state\ of\ game\ and\ operations\ available}}
+\DoxyCodeLine{00515\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classthc_1_1_chess_rules}{ChessRules}}:\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classthc_1_1_chess_position}{ChessPosition}}}
+\DoxyCodeLine{00516\ \ \ \ \ \{}
+\DoxyCodeLine{00517\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00518\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Default\ constructor}}
+\DoxyCodeLine{00519\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classthc_1_1_chess_rules}{ChessRules}}()\ :\ \mbox{\hyperlink{classthc_1_1_chess_position}{ChessPosition}}()\ \{\ Init();\ \}}
+\DoxyCodeLine{00520\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ Init()\ \ \ \ \textcolor{comment}{//\ TODO\ ==\ ChessRules::Init()\ should\ call\ ChessPosition::Init()\ right\ ????!!!!}}
+\DoxyCodeLine{00521\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Thoughts:\ Maybe\ -\/\ but\ can't\ do\ this\ casually.\ For\ example\ we\ would\ need\ to}}
+\DoxyCodeLine{00522\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ change\ the\ code\ that\ converts\ ChessPosition\ to\ ChessRules\ below,\ both\ the}}
+\DoxyCodeLine{00523\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ copy\ constructor\ and\ assignment\ operator\ use\ ChessRules::Init()\ at\ a\ time}}
+\DoxyCodeLine{00524\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ when\ it\ would\ be\ disastrous\ to\ set\ the\ initial\ position\ (because}}
+\DoxyCodeLine{00525\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ we\ have\ carefully\ copied\ a\ position\ into\ the\ ChessRules\ object)}}
+\DoxyCodeLine{00526\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00527\ \ \ \ \ \ \ \ \ \ \ \ \ history\_idx\ \ \ \ =\ 1;\ \ \ \ \textcolor{comment}{//\ prevent\ bogus\ repition\ draws}}
+\DoxyCodeLine{00528\ \ \ \ \ \ \ \ \ \ \ \ \ history[0].src\ =\ a8;\ \ \ \textcolor{comment}{//\ (look\ backwards\ through\ history\ stops\ when\ src==dst)}}
+\DoxyCodeLine{00529\ \ \ \ \ \ \ \ \ \ \ \ \ history[0].dst\ =\ a8;}
+\DoxyCodeLine{00530\ \ \ \ \ \ \ \ \ \ \ \ \ detail\_idx\ =0;}
+\DoxyCodeLine{00531\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00532\ }
+\DoxyCodeLine{00533\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Copy\ constructor}}
+\DoxyCodeLine{00534\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classthc_1_1_chess_rules}{ChessRules}}(\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classthc_1_1_chess_position}{ChessPosition}}\&\ src\ )\ :\ \mbox{\hyperlink{classthc_1_1_chess_position}{ChessPosition}}(\ src\ )}
+\DoxyCodeLine{00535\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00536\ \ \ \ \ \ \ \ \ \ \ \ \ Init();\ \ \ \textcolor{comment}{//\ even\ if\ src\ is\ eg\ ChessRules\ or\ ChessEngine\ don't}}
+\DoxyCodeLine{00537\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ copy\ stuff\ for\ repitition,\ 50\ move\ rule}}
+\DoxyCodeLine{00538\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00539\ }
+\DoxyCodeLine{00540\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Assignment\ operator}}
+\DoxyCodeLine{00541\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classthc_1_1_chess_rules}{ChessRules}}\&\ operator=(\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classthc_1_1_chess_position}{ChessPosition}}\&\ src\ )}
+\DoxyCodeLine{00542\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00543\ \ \ \ \ \ \ \ \ \ \ \ \ *((\mbox{\hyperlink{classthc_1_1_chess_position}{ChessPosition}}\ *)\textcolor{keyword}{this})\ =\ src;}
+\DoxyCodeLine{00544\ \ \ \ \ \ \ \ \ \ \ \ \ Init();\ \ \ \textcolor{comment}{//\ even\ if\ src\ is\ eg\ ChessRules\ or\ ChessEngine\ don't}}
+\DoxyCodeLine{00545\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ copy\ stuff\ for\ repitition,\ 50\ move\ rule}}
+\DoxyCodeLine{00546\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00547\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00548\ }
+\DoxyCodeLine{00549\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Test\ internals,\ for\ porting\ to\ new\ environments\ etc}}
+\DoxyCodeLine{00550\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ TestInternals(\ \textcolor{keywordtype}{int}\ (*log)(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *,...)\ =\ NULL\ );}
+\DoxyCodeLine{00551\ }
+\DoxyCodeLine{00552\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Initialise\ from\ Forsyth\ string}}
+\DoxyCodeLine{00553\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ Forsyth(\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *txt\ )}
+\DoxyCodeLine{00554\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00555\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ okay\ =\ ChessPosition::Forsyth(txt);}
+\DoxyCodeLine{00556\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\ okay\ )}
+\DoxyCodeLine{00557\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Init();\ \textcolor{comment}{//\ clear\ stuff\ for\ repitition,\ 50\ move\ rule}}
+\DoxyCodeLine{00558\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ okay;}
+\DoxyCodeLine{00559\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00560\ }
+\DoxyCodeLine{00561\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ Test\ for\ legal\ position,\ sets\ reason\ to\ a\ mask\ of\ possibly\ multiple\ reasons}}
+\DoxyCodeLine{00562\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ IsLegal(\ ILLEGAL\_REASON\&\ reason\ );}
+\DoxyCodeLine{00563\ }
+\DoxyCodeLine{00564\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Play\ a\ move}}
+\DoxyCodeLine{00565\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ PlayMove(\ \mbox{\hyperlink{classthc_1_1_move}{Move}}\ imove\ );}
+\DoxyCodeLine{00566\ }
+\DoxyCodeLine{00567\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Check\ draw\ rules\ (50\ move\ rule\ etc.)}}
+\DoxyCodeLine{00568\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ IsDraw(\ \textcolor{keywordtype}{bool}\ white\_asks,\ DRAWTYPE\ \&result\ );}
+\DoxyCodeLine{00569\ }
+\DoxyCodeLine{00570\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Get\ number\ of\ times\ position\ has\ been\ repeated}}
+\DoxyCodeLine{00571\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ GetRepetitionCount();}
+\DoxyCodeLine{00572\ }
+\DoxyCodeLine{00573\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Check\ insufficient\ material\ draw\ rule}}
+\DoxyCodeLine{00574\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ IsInsufficientDraw(\ \textcolor{keywordtype}{bool}\ white\_asks,\ DRAWTYPE\ \&result\ );}
+\DoxyCodeLine{00575\ }
+\DoxyCodeLine{00576\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Evaluate\ a\ position,\ returns\ bool\ okay\ (not\ okay\ means\ illegal\ position)}}
+\DoxyCodeLine{00577\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ Evaluate();}
+\DoxyCodeLine{00578\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ Evaluate(\ TERMINAL\ \&score\_terminal\ );}
+\DoxyCodeLine{00579\ }
+\DoxyCodeLine{00580\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Is\ a\ square\ is\ attacked\ by\ enemy\ ?}}
+\DoxyCodeLine{00581\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ AttackedSquare(\ Square\ square,\ \textcolor{keywordtype}{bool}\ enemy\_is\_white\ );}
+\DoxyCodeLine{00582\ }
+\DoxyCodeLine{00583\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Determine\ if\ an\ occupied\ square\ is\ attacked}}
+\DoxyCodeLine{00584\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ AttackedPiece(\ Square\ square\ );}
+\DoxyCodeLine{00585\ }
+\DoxyCodeLine{00586\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Transform\ a\ position\ with\ W\ to\ move\ into\ an\ equivalent\ with\ B\ to\ move\ and\ vice-\/versa}}
+\DoxyCodeLine{00587\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ Transform();}
+\DoxyCodeLine{00588\ }
+\DoxyCodeLine{00589\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Transform\ a\ W\ move\ in\ a\ transformed\ position\ to\ a\ B\ one\ and\ vice-\/versa}}
+\DoxyCodeLine{00590\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classthc_1_1_move}{Move}}\ Transform(\ \mbox{\hyperlink{classthc_1_1_move}{Move}}\ m\ );}
+\DoxyCodeLine{00591\ }
+\DoxyCodeLine{00592\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Create\ a\ list\ of\ all\ legal\ moves\ in\ this\ position}}
+\DoxyCodeLine{00593\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ GenLegalMoveList(\ std::vector<Move>\ \&moves\ );}
+\DoxyCodeLine{00594\ }
+\DoxyCodeLine{00595\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ Create\ a\ list\ of\ all\ legal\ moves\ in\ this\ position,\ with\ extra\ info}}
+\DoxyCodeLine{00596\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ GenLegalMoveList(\ \ std::vector<Move>\ \&moves,}
+\DoxyCodeLine{00597\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<bool>\ \&check,}
+\DoxyCodeLine{00598\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<bool>\ \&mate,}
+\DoxyCodeLine{00599\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<bool>\ \&stalemate\ );}
+\DoxyCodeLine{00600\ }
+\DoxyCodeLine{00601\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Create\ a\ list\ of\ all\ legal\ moves\ in\ this\ position}}
+\DoxyCodeLine{00602\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ GenLegalMoveList(\ \mbox{\hyperlink{structthc_1_1_m_o_v_e_l_i_s_t}{MOVELIST}}\ *list\ );}
+\DoxyCodeLine{00603\ }
+\DoxyCodeLine{00604\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Create\ a\ list\ of\ all\ legal\ moves\ in\ this\ position,\ with\ extra\ info}}
+\DoxyCodeLine{00605\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ GenLegalMoveList(\ \mbox{\hyperlink{structthc_1_1_m_o_v_e_l_i_s_t}{MOVELIST}}\ *list,\ \textcolor{keywordtype}{bool}\ check[MAXMOVES],}
+\DoxyCodeLine{00606\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ mate[MAXMOVES],}
+\DoxyCodeLine{00607\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ stalemate[MAXMOVES]\ );}
+\DoxyCodeLine{00608\ }
+\DoxyCodeLine{00609\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Make\ a\ move\ (with\ the\ potential\ to\ undo)}}
+\DoxyCodeLine{00610\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ PushMove(\ \mbox{\hyperlink{classthc_1_1_move}{Move}}\&\ m\ );}
+\DoxyCodeLine{00611\ }
+\DoxyCodeLine{00612\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Undo\ a\ move}}
+\DoxyCodeLine{00613\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ PopMove(\ \mbox{\hyperlink{classthc_1_1_move}{Move}}\&\ m\ );}
+\DoxyCodeLine{00614\ }
+\DoxyCodeLine{00615\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Test\ fundamental\ internal\ assumptions\ and\ operations}}
+\DoxyCodeLine{00616\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ TestInternals();}
+\DoxyCodeLine{00617\ }
+\DoxyCodeLine{00618\ \textcolor{comment}{//\ Private\ stuff}}
+\DoxyCodeLine{00619\ \ \ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00620\ }
+\DoxyCodeLine{00621\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Generate\ a\ list\ of\ all\ possible\ moves\ in\ a\ position\ (including}}
+\DoxyCodeLine{00622\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ illegally\ "{}moving\ into\ check"{})}}
+\DoxyCodeLine{00623\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ GenMoveList(\ \mbox{\hyperlink{structthc_1_1_m_o_v_e_l_i_s_t}{MOVELIST}}\ *l\ );}
+\DoxyCodeLine{00624\ }
+\DoxyCodeLine{00625\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Generate\ moves\ for\ pieces\ that\ move\ along\ multi-\/move\ rays\ (B,R,Q)}}
+\DoxyCodeLine{00626\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ LongMoves(\ \mbox{\hyperlink{structthc_1_1_m_o_v_e_l_i_s_t}{MOVELIST}}\ *l,\ Square\ square,\ \textcolor{keyword}{const}\ lte\ *ptr\ );}
+\DoxyCodeLine{00627\ }
+\DoxyCodeLine{00628\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Generate\ moves\ for\ pieces\ that\ move\ along\ single-\/move\ rays\ (K,N,P)}}
+\DoxyCodeLine{00629\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ ShortMoves(\ \mbox{\hyperlink{structthc_1_1_m_o_v_e_l_i_s_t}{MOVELIST}}\ *l,\ Square\ square,\ \textcolor{keyword}{const}\ lte\ *ptr,\ SPECIAL\ special\ \ );}
+\DoxyCodeLine{00630\ }
+\DoxyCodeLine{00631\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Generate\ list\ of\ king\ moves}}
+\DoxyCodeLine{00632\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ KingMoves(\ \mbox{\hyperlink{structthc_1_1_m_o_v_e_l_i_s_t}{MOVELIST}}\ *l,\ Square\ square\ );}
+\DoxyCodeLine{00633\ }
+\DoxyCodeLine{00634\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Generate\ list\ of\ white\ pawn\ moves}}
+\DoxyCodeLine{00635\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ WhitePawnMoves(\ \mbox{\hyperlink{structthc_1_1_m_o_v_e_l_i_s_t}{MOVELIST}}\ *l,\ Square\ square\ );}
+\DoxyCodeLine{00636\ }
+\DoxyCodeLine{00637\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Generate\ list\ of\ black\ pawn\ moves}}
+\DoxyCodeLine{00638\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ BlackPawnMoves(\ \mbox{\hyperlink{structthc_1_1_m_o_v_e_l_i_s_t}{MOVELIST}}\ *l,\ Square\ square\ );}
+\DoxyCodeLine{00639\ }
+\DoxyCodeLine{00640\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Evaluate\ a\ position,\ returns\ bool\ okay\ (not\ okay\ means\ illegal\ position)}}
+\DoxyCodeLine{00641\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ Evaluate(\ \mbox{\hyperlink{structthc_1_1_m_o_v_e_l_i_s_t}{MOVELIST}}\ *list,\ TERMINAL\ \&score\_terminal\ );}
+\DoxyCodeLine{00642\ }
+\DoxyCodeLine{00643\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\#\#\#\ Data}}
+\DoxyCodeLine{00644\ }
+\DoxyCodeLine{00645\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Move\ history\ is\ a\ ring\ array}}
+\DoxyCodeLine{00646\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classthc_1_1_move}{Move}}\ history[256];\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ must\ be\ 256\ ..}}
+\DoxyCodeLine{00647\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ history\_idx;\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ ..\ so\ this\ loops\ around\ naturally}}
+\DoxyCodeLine{00648\ }
+\DoxyCodeLine{00649\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Detail\ stack\ is\ a\ ring\ array}}
+\DoxyCodeLine{00650\ \ \ \ \ \ \ \ \ DETAIL\ detail\_stack[256];\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ must\ be\ 256\ ..}}
+\DoxyCodeLine{00651\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ detail\_idx;\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ ..\ so\ this\ loops\ around\ naturally}}
+\DoxyCodeLine{00652\ \ \ \ \ \};}
+\DoxyCodeLine{00653\ }
+\DoxyCodeLine{00654\ \}\ \textcolor{comment}{//namespace\ thc}}
+\DoxyCodeLine{00655\ }
+\DoxyCodeLine{00656\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//CHESSRULES\_H}}
+\DoxyCodeLine{00657\ \textcolor{comment}{/****************************************************************************}}
+\DoxyCodeLine{00658\ \textcolor{comment}{\ *\ ChessEvaluation.h\ Chess\ classes\ -\/\ Simple\ chess\ AI,\ leaf\ scoring\ function\ for\ position}}
+\DoxyCodeLine{00659\ \textcolor{comment}{\ *\ \ Author:\ \ Bill\ Forster}}
+\DoxyCodeLine{00660\ \textcolor{comment}{\ *\ \ License:\ MIT\ license.\ Full\ text\ of\ license\ is\ in\ associated\ file\ LICENSE}}
+\DoxyCodeLine{00661\ \textcolor{comment}{\ *\ \ Copyright\ 2010-\/2020,\ Bill\ Forster\ <billforsternz\ at\ gmail\ dot\ com>}}
+\DoxyCodeLine{00662\ \textcolor{comment}{\ ****************************************************************************/}}
+\DoxyCodeLine{00663\ \textcolor{preprocessor}{\#ifndef\ CHESSEVALUATION\_H}}
+\DoxyCodeLine{00664\ \textcolor{preprocessor}{\#define\ CHESSEVALUATION\_H}}
+\DoxyCodeLine{00665\ }
+\DoxyCodeLine{00666\ \textcolor{comment}{//\ TripleHappyChess}}
+\DoxyCodeLine{00667\ \textcolor{keyword}{namespace\ }thc}
+\DoxyCodeLine{00668\ \{}
+\DoxyCodeLine{00669\ }
+\DoxyCodeLine{00670\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{classthc_1_1_chess_evaluation}{ChessEvaluation}}:\ \textcolor{keyword}{public}\ \mbox{\hyperlink{classthc_1_1_chess_rules}{ChessRules}}}
+\DoxyCodeLine{00671\ \ \ \ \ \{}
+\DoxyCodeLine{00672\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00673\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Default\ contructor}}
+\DoxyCodeLine{00674\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classthc_1_1_chess_evaluation}{ChessEvaluation}}()\ :\ \mbox{\hyperlink{classthc_1_1_chess_rules}{ChessRules}}()}
+\DoxyCodeLine{00675\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00676\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00677\ }
+\DoxyCodeLine{00678\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Copy\ constructor}}
+\DoxyCodeLine{00679\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classthc_1_1_chess_evaluation}{ChessEvaluation}}(\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classthc_1_1_chess_position}{ChessPosition}}\&\ src\ )\ :\ \mbox{\hyperlink{classthc_1_1_chess_rules}{ChessRules}}(\ src\ )}
+\DoxyCodeLine{00680\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00681\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00682\ }
+\DoxyCodeLine{00683\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Assignment\ operator}}
+\DoxyCodeLine{00684\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classthc_1_1_chess_evaluation}{ChessEvaluation}}\&\ operator=(\ \textcolor{keyword}{const}\ \mbox{\hyperlink{classthc_1_1_chess_position}{ChessPosition}}\&\ src\ )}
+\DoxyCodeLine{00685\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00686\ \ \ \ \ \ \ \ \ \ \ \ \ *((\mbox{\hyperlink{classthc_1_1_chess_rules}{ChessRules}}\ *)\textcolor{keyword}{this})\ =\ src;}
+\DoxyCodeLine{00687\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00688\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00689\ }
+\DoxyCodeLine{00690\ }
+\DoxyCodeLine{00691\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Use\ leaf\ evaluator\ to\ generate\ a\ sorted\ move\ list}}
+\DoxyCodeLine{00692\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ GenLegalMoveListSorted(\ \mbox{\hyperlink{structthc_1_1_m_o_v_e_l_i_s_t}{MOVELIST}}\ *list\ );}
+\DoxyCodeLine{00693\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ GenLegalMoveListSorted(\ std::vector<Move>\ \&moves\ );}
+\DoxyCodeLine{00694\ }
+\DoxyCodeLine{00695\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Evaluate\ a\ position,\ leaf\ node\ (useful\ for\ playing\ programs)}}
+\DoxyCodeLine{00696\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ EvaluateLeaf(\ \textcolor{keywordtype}{int}\ \&material,\ \textcolor{keywordtype}{int}\ \&positional\ );}
+\DoxyCodeLine{00697\ }
+\DoxyCodeLine{00698\ \textcolor{comment}{//\ internal\ stuff}}
+\DoxyCodeLine{00699\ \ \ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00700\ }
+\DoxyCodeLine{00701\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Always\ some\ planning\ before\ calculating\ a\ move}}
+\DoxyCodeLine{00702\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ Planning();}
+\DoxyCodeLine{00703\ }
+\DoxyCodeLine{00704\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Calculate\ material\ that\ side\ to\ play\ can\ win\ directly}}
+\DoxyCodeLine{00705\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ Enprise();}
+\DoxyCodeLine{00706\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ EnpriseWhite();\ \ \ \textcolor{comment}{//\ fast\ white\ to\ move\ version}}
+\DoxyCodeLine{00707\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ EnpriseBlack();\ \ \ \textcolor{comment}{//\ fast\ black\ to\ move\ version}}
+\DoxyCodeLine{00708\ }
+\DoxyCodeLine{00709\ \textcolor{comment}{//\ misc}}
+\DoxyCodeLine{00710\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00711\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ white\_is\_better;}
+\DoxyCodeLine{00712\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ black\_is\_better;}
+\DoxyCodeLine{00713\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \ planning\_score\_white\_pieces;}
+\DoxyCodeLine{00714\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \ planning\_score\_black\_pieces;}
+\DoxyCodeLine{00715\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \ planning\_white\_piece\_pawn\_percent;}
+\DoxyCodeLine{00716\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ \ planning\_black\_piece\_pawn\_percent;}
+\DoxyCodeLine{00717\ \ \ \ \ \};}
+\DoxyCodeLine{00718\ }
+\DoxyCodeLine{00719\ \}\ \textcolor{comment}{//namespace\ thc}}
+\DoxyCodeLine{00720\ }
+\DoxyCodeLine{00721\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//CHESSEVALUATION\_H}}
+
+\end{DoxyCode}

@@ -1,0 +1,52 @@
+\hypertarget{game_8hpp_source}{}\doxysection{game.\+hpp}
+\label{game_8hpp_source}\index{WizardChess/lib/game/game.hpp@{WizardChess/lib/game/game.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#ifndef\ WIZARD\_CHESS\_GAME\_HPP}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#define\ WIZARD\_CHESS\_GAME\_HPP}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}board.hpp"{}}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}steppers.hpp"{}}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classgame}{game}}\ \{}
+\DoxyCodeLine{00015\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keywordtype}{bool}\ verbose;}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keywordtype}{bool}\ player\_is\_white\{\};}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{comment}{//\ instantiate\ in\ game.cpp\ instead}}
+\DoxyCodeLine{00021\ \ \ \ \ \mbox{\hyperlink{classboard}{board}}\ chess\_board\ =\ \mbox{\hyperlink{classboard}{board}}(\textcolor{keyword}{true});}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordtype}{int}\ move\_number;}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \ \ \ \ \mbox{\hyperlink{classsteppers}{steppers}}\ stepper\ =\ \mbox{\hyperlink{classsteppers}{steppers}}(\textcolor{keyword}{false});}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \ \ \ \ std::vector<std::string>\ move\_sequence;}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{comment}{//\ 0\ -\/\ White's\ turn}}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{comment}{//\ 1\ -\/\ Black's\ turn}}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{int}\ turn;}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \ \ \ \ \mbox{\hyperlink{classgame}{game}}(\textcolor{keywordtype}{bool}\ verbose);}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \ \ \ \ \mbox{\hyperlink{classgame}{\string~game}}();}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classgame_a15dd3a05d7e98d2e7ab4634e5d5fe39c}{start\_game}}();}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{classgame_ae55eda9e3999756e82dabe6168514bfa}{get\_number\_of\_moves}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \};}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//WIZARD\_CHESS\_GAME\_HPP}}
+
+\end{DoxyCode}

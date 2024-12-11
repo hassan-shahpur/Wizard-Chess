@@ -1,0 +1,7 @@
+cmake-build-debug
+venv
+.vscode
+.idea
+boost_1_81_0
+.DS_Store
+media/

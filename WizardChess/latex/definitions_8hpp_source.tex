@@ -1,0 +1,44 @@
+\hypertarget{definitions_8hpp_source}{}\doxysection{definitions.\+hpp}
+\label{definitions_8hpp_source}\index{WizardChess/lib/definitions/definitions.hpp@{WizardChess/lib/definitions/definitions.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ This\ is\ the\ speed\ that\ the\ steppers\ move\ at}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#define\ DELAY\ 1}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{comment}{//\ Define\ stepper\ motor\ pins}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ PIN\_A1\ 23}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#define\ PIN\_A2\ 22}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#define\ PIN\_B1\ 32}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#define\ PIN\_B2\ 27}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{comment}{//\ Define\ button\ pins}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#define\ PIN\_BUTTON\ 20}}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{comment}{//\ Define\ the\ electromagnet}}
+\DoxyCodeLine{00021\ \textcolor{comment}{//\ \#define\ PIN\_ELECTROMAGNET\ 17}}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{comment}{//\ Define\ hall\ effect\ sensor\ pins}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#define\ PIN\_QUERY1\ 16}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#define\ PIN\_QUERY2\ 13}}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#define\ PIN\_QUERY3\ 12}}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#define\ PIN\_LIMIT1\ 15}}
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#define\ PIN\_LIMIT2\ 13}}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \textcolor{comment}{//\ Define\ the\ boundaries\ for\ the\ chess\ board}}
+\DoxyCodeLine{00032\ \textcolor{comment}{//\ This\ way\ it\ shouldnt\ crash\ into\ the\ walls\ when\ moving}}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#define\ MAX\_X\ 100.0}}
+\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#define\ MAX\_Y\ 100.0}}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \textcolor{comment}{//\ =================================================}}
+\DoxyCodeLine{00037\ \textcolor{comment}{//\ This\ is\ the\ ratio\ between\ steps\ from\ the\ stepper,\ to\ mm.\ }}
+\DoxyCodeLine{00038\ \textcolor{comment}{//\ This\ is\ the\ circumference\ of\ the\ pullley,\ divided\ by\ the\ number\ of\ steps\ per\ revolution,\ so}}
+\DoxyCodeLine{00039\ \textcolor{comment}{//\ 2*pi*12.22*(1.8/360)\ =\ 0.3839026223}}
+\DoxyCodeLine{00040\ \textcolor{comment}{//\ If\ you\ want\ to\ move\ x\ mm,\ follow\ the\ formula\ below\ }}
+\DoxyCodeLine{00041\ \textcolor{comment}{//\ steps\ =\ (x)\ *\ 0.3839026223}}
+\DoxyCodeLine{00042\ \textcolor{preprocessor}{\#define\ DISTANCE\_RATIO\ =\ 0.3839026223}}
+\DoxyCodeLine{00043\ \textcolor{comment}{//\ =================================================}}
+
+\end{DoxyCode}

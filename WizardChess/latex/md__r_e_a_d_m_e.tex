@@ -1,0 +1,22 @@
+Group 14
+
+How to run acceptance tests\+:
+
+Detect if all pieces are in the correct starting position and Move Identification given new state\+:
+
+
+\begin{DoxyEnumerate}
+\item cd into test folder under src
+\item run the following command\+: g++ -\/std=c++11 test\+\_\+board.\+cpp ../board/board.cpp ../board\+\_\+sensors/board\+\_\+sensors.cpp ../board/thc.cpp -\/I ../board/ -\/I ../board\+\_\+sensors/
+\item run the executable (./test\+\_\+board)
+\end{DoxyEnumerate}
+
+Detecting if a piece is on a certain square\+:
+
+Needs to be shown in demo, but small example given in the videos submitted
+
+Create Magnetic Chess Pieces\+:
+
+Needs to be shown in demo.
+
+Test folder\+: In the test directory there is a variety of tests that have been created\+: led\+\_\+test.\+ino\+: this tests LED and arduino control over hardware test\+\_\+api.\+cpp\+: This sets up the lichess API and sets the game ID of a game lichess\+\_\+api.\+py\+: Python testing script to see what information can be pulled from the Lichess API test\+\_\+stockfish.\+py\+: Set a position for the chess game and test the stockfish AI functionality by asking its best move 

@@ -1,0 +1,12 @@
+Wizard Chess
+
+Simulates the game of wizard's chess, a variant of chess played with animated pieces that can move and attack on their own, as seen in the Harry Potter book and film series. The board fully automated and the pieces are moved by an electromagnet. The electromagnet is in turn moved by two stepper motors within a grid.
+
+Testing the components:
+  - chess_bot
+    cd into chess_bot, to compile run: g++ test_stockfish_bot.cpp stockfish_bot.cpp -I./
+  - board
+    cd into lib/board, before compiling need to comment out the "Arduino.h" import in board_sensors.cpp, then
+    to compile run: g++ test_board.cpp thc.cpp board.cpp ../board_sensors/board_sensors.cpp -I./ -I../board_sensors
+  - thc 
+    cd into lib/board, to compile run: g++ test_thc.cpp thc.cpp -I./

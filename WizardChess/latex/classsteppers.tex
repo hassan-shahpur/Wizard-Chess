@@ -1,0 +1,148 @@
+\hypertarget{classsteppers}{}\doxysection{steppers Class Reference}
+\label{classsteppers}\index{steppers@{steppers}}
+
+
+Controls the movement of the gantry.  
+
+
+
+
+{\ttfamily \#include $<$steppers.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classsteppers_aeda707e39ec7f2f53e718eee98bb23ea}\label{classsteppers_aeda707e39ec7f2f53e718eee98bb23ea}} 
+{\bfseries steppers} (bool verbose)
+\item 
+void \mbox{\hyperlink{classsteppers_ab5455ef3b449981aa7ab62354f40145f}{zero\+\_\+steppers}} ()
+\begin{DoxyCompactList}\small\item\em Reset position of stepper to find position. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classsteppers_a3e46b6ac743d74d56fef9161016d2520}{make\+\_\+move}} (std\+::string move)
+\begin{DoxyCompactList}\small\item\em Move the piece. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classsteppers_a1d172dcdc990a596df22896a1c149193}\label{classsteppers_a1d172dcdc990a596df22896a1c149193}} 
+std\+::tuple$<$ int, int $>$ {\bfseries get\+\_\+servo\+\_\+angle} ()
+\item 
+\mbox{\Hypertarget{classsteppers_aeb150e5d65850ca398a10b7450b3a123}\label{classsteppers_aeb150e5d65850ca398a10b7450b3a123}} 
+void {\bfseries test} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classsteppers_a4dba337ea6177b8eed402c36d76e3b73}{tick\+\_\+x}} (int direction)
+\begin{DoxyCompactList}\small\item\em Controls the movement of the gantry. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classsteppers_abbe07340be76305217d2745806136f47}{tick\+\_\+y}} (int direction)
+\begin{DoxyCompactList}\small\item\em Moves in the y direction by one step. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classsteppers_a67dfbea2360d8ae314c65491b0a093e4}{set\+\_\+stepper}} (int value, int motor)
+\begin{DoxyCompactList}\small\item\em Set the stepper motor. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classsteppers_a3069fbd08bc20850e620276281525fc2}\label{classsteppers_a3069fbd08bc20850e620276281525fc2}} 
+void {\bfseries move\+\_\+to} (float x\+\_\+dist, float y\+\_\+dist)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classsteppers_a604e86a345faa949c7eda4feabe601eb}\label{classsteppers_a604e86a345faa949c7eda4feabe601eb}} 
+int {\bfseries BOARD\+\_\+\+WIDTH} = 0
+\item 
+\mbox{\Hypertarget{classsteppers_a8e23acd4b676d9f56be06e72d20ffcb9}\label{classsteppers_a8e23acd4b676d9f56be06e72d20ffcb9}} 
+int {\bfseries BOARD\+\_\+\+HEIGHT} = 0
+\item 
+\mbox{\Hypertarget{classsteppers_abc6d52ac96a97054e1b07c2151d94d3b}\label{classsteppers_abc6d52ac96a97054e1b07c2151d94d3b}} 
+int {\bfseries current\+\_\+x} = 0
+\item 
+\mbox{\Hypertarget{classsteppers_a8d09eb655c1f77fbfd8d290b4bb4e9c7}\label{classsteppers_a8d09eb655c1f77fbfd8d290b4bb4e9c7}} 
+int {\bfseries current\+\_\+y} = 0
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Controls the movement of the gantry. 
+
+Methods that move the gantry in different amounts to the necessasry squares \begin{DoxyAuthor}{Authors}
+
+\end{DoxyAuthor}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classsteppers_a3e46b6ac743d74d56fef9161016d2520}\label{classsteppers_a3e46b6ac743d74d56fef9161016d2520}} 
+\index{steppers@{steppers}!make\_move@{make\_move}}
+\index{make\_move@{make\_move}!steppers@{steppers}}
+\doxysubsubsection{\texorpdfstring{make\_move()}{make\_move()}}
+{\footnotesize\ttfamily bool steppers\+::make\+\_\+move (\begin{DoxyParamCaption}\item[{std\+::string}]{move }\end{DoxyParamCaption})}
+
+
+
+Move the piece. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em string} & move selected \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classsteppers_a67dfbea2360d8ae314c65491b0a093e4}\label{classsteppers_a67dfbea2360d8ae314c65491b0a093e4}} 
+\index{steppers@{steppers}!set\_stepper@{set\_stepper}}
+\index{set\_stepper@{set\_stepper}!steppers@{steppers}}
+\doxysubsubsection{\texorpdfstring{set\_stepper()}{set\_stepper()}}
+{\footnotesize\ttfamily void steppers\+::set\+\_\+stepper (\begin{DoxyParamCaption}\item[{int}]{value,  }\item[{int}]{motor }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Set the stepper motor. 
+
+A step is made by setting the motor high, then low 
+\begin{DoxyParams}{Parameters}
+{\em value} & The value to set the motor to. High or low \\
+\hline
+{\em motor} & The motor to tick. 0 is A, 1 is B \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classsteppers_a4dba337ea6177b8eed402c36d76e3b73}\label{classsteppers_a4dba337ea6177b8eed402c36d76e3b73}} 
+\index{steppers@{steppers}!tick\_x@{tick\_x}}
+\index{tick\_x@{tick\_x}!steppers@{steppers}}
+\doxysubsubsection{\texorpdfstring{tick\_x()}{tick\_x()}}
+{\footnotesize\ttfamily void steppers\+::tick\+\_\+x (\begin{DoxyParamCaption}\item[{int}]{direction }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Controls the movement of the gantry. 
+
+Methods that move the gantry in different amounts to the necessasry squares \begin{DoxyAuthor}{Authors}
+
+\end{DoxyAuthor}
+Moves in the x direction by one step
+
+
+\begin{DoxyParams}{Parameters}
+{\em direction} & The diection to move. 0 for negative, 1 for positive \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classsteppers_abbe07340be76305217d2745806136f47}\label{classsteppers_abbe07340be76305217d2745806136f47}} 
+\index{steppers@{steppers}!tick\_y@{tick\_y}}
+\index{tick\_y@{tick\_y}!steppers@{steppers}}
+\doxysubsubsection{\texorpdfstring{tick\_y()}{tick\_y()}}
+{\footnotesize\ttfamily void steppers\+::tick\+\_\+y (\begin{DoxyParamCaption}\item[{int}]{direction }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Moves in the y direction by one step. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em direction} & The diection to move. 0 for negative, 1 for positive \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classsteppers_ab5455ef3b449981aa7ab62354f40145f}\label{classsteppers_ab5455ef3b449981aa7ab62354f40145f}} 
+\index{steppers@{steppers}!zero\_steppers@{zero\_steppers}}
+\index{zero\_steppers@{zero\_steppers}!steppers@{steppers}}
+\doxysubsubsection{\texorpdfstring{zero\_steppers()}{zero\_steppers()}}
+{\footnotesize\ttfamily void steppers\+::zero\+\_\+steppers (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Reset position of stepper to find position. 
+
+Make the gantry hit two corners to find the x and the y axis so we have the values of both stored 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Wizard\+Chess/lib/steppers/steppers.\+hpp\item 
+Wizard\+Chess/lib/steppers/steppers.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,47 @@
+\hypertarget{steppers_8hpp_source}{}\doxysection{steppers.\+hpp}
+\label{steppers_8hpp_source}\index{WizardChess/lib/steppers/steppers.hpp@{WizardChess/lib/steppers/steppers.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#ifndef\ WIZARD\_CHESS\_STEPPERS\_HPP}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#define\ WIZARD\_CHESS\_STEPPERS\_HPP}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <tuple>}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classsteppers}{steppers}}\ \{}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keywordtype}{int}\ BOARD\_WIDTH\ =\ 0;}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keywordtype}{int}\ BOARD\_HEIGHT\ =\ 0;}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keywordtype}{int}\ current\_x\ =\ 0;}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keywordtype}{int}\ current\_y\ =\ 0;}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classsteppers_a4dba337ea6177b8eed402c36d76e3b73}{tick\_x}}(\textcolor{keywordtype}{int}\ direction);}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classsteppers_abbe07340be76305217d2745806136f47}{tick\_y}}(\textcolor{keywordtype}{int}\ direction);}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classsteppers_a67dfbea2360d8ae314c65491b0a093e4}{set\_stepper}}(\textcolor{keywordtype}{int}\ value,\ \textcolor{keywordtype}{int}\ motor);}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{void}\ move\_to(\textcolor{keywordtype}{float}\ x\_dist,\ \textcolor{keywordtype}{float}\ y\_dist);}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \ \ \mbox{\hyperlink{classsteppers}{steppers}}(\textcolor{keywordtype}{bool}\ verbose);}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classsteppers_ab5455ef3b449981aa7ab62354f40145f}{zero\_steppers}}();}
+\DoxyCodeLine{00036\ \ \ \ \ }
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classsteppers_a3e46b6ac743d74d56fef9161016d2520}{make\_move}}(std::string\ move);}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \ \ \ \ std::tuple<int,\ int>\ get\_servo\_angle();}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordtype}{void}\ test();}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \};}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//WIZARD\_CHESS\_STEPPERS\_HPP}}
+
+\end{DoxyCode}

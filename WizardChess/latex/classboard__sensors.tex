@@ -1,0 +1,122 @@
+\hypertarget{classboard__sensors}{}\doxysection{board\+\_\+sensors Class Reference}
+\label{classboard__sensors}\index{board\_sensors@{board\_sensors}}
+
+
+Uses board sensors to set up the board state for use throught the code.  
+
+
+
+
+{\ttfamily \#include $<$board\+\_\+sensors.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classboard__sensors_af4d7bbe5bbe4def8a8fb4fbbdb45542b}{board\+\_\+sensors}} (bool verbose)
+\begin{DoxyCompactList}\small\item\em Uses board sensors to set up the board state for use throught the code. \end{DoxyCompactList}\item 
+std\+::vector$<$ std\+::vector$<$ bool $>$ $>$ \mbox{\hyperlink{classboard__sensors_a86925c017a05fcbb248131d597262d87}{get\+\_\+board\+\_\+state}} ()
+\begin{DoxyCompactList}\small\item\em Check the state of all squares on the board. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{classboard__sensors_adc44a6873f1e110fa3e8578c54e24870}{get\+\_\+square\+\_\+state}} (int x, int y)
+\begin{DoxyCompactList}\small\item\em returns the board state of specific square \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{classboard__sensors_adc72ba8b252007eeaefe67405fff2113}{print\+\_\+board\+\_\+state}} (std\+::vector$<$ std\+::vector$<$ bool $>$ $>$ state)
+\begin{DoxyCompactList}\small\item\em Prints current board state. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classboard__sensors_a640695517de753b62b650b64fb906a05}\label{classboard__sensors_a640695517de753b62b650b64fb906a05}} 
+bool {\bfseries verbose}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Uses board sensors to set up the board state for use throught the code. 
+
+Initializes board sensors, uses them to detect where each piece is and store in a board vector, as well as checking individual squares and printing the board state. \begin{DoxyAuthor}{Author}
+Jarvis 
+\end{DoxyAuthor}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classboard__sensors_af4d7bbe5bbe4def8a8fb4fbbdb45542b}\label{classboard__sensors_af4d7bbe5bbe4def8a8fb4fbbdb45542b}} 
+\index{board\_sensors@{board\_sensors}!board\_sensors@{board\_sensors}}
+\index{board\_sensors@{board\_sensors}!board\_sensors@{board\_sensors}}
+\doxysubsubsection{\texorpdfstring{board\_sensors()}{board\_sensors()}}
+{\footnotesize\ttfamily board\+\_\+sensors\+::board\+\_\+sensors (\begin{DoxyParamCaption}\item[{bool}]{verbose }\end{DoxyParamCaption})}
+
+
+
+Uses board sensors to set up the board state for use throught the code. 
+
+Initializes board sensors, uses them to detect where each piece is and store in a board vector, as well as checking individual squares and printing the board state. \begin{DoxyAuthor}{Author}
+Jarvis
+\end{DoxyAuthor}
+Board sensor constructor to initialize board sensors
+
+Initializes board sensors for use of reading board states using hall effect sensor input 
+\begin{DoxyParams}{Parameters}
+{\em Boolean} & verbose, used for deugging to print additional info \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classboard__sensors_a86925c017a05fcbb248131d597262d87}\label{classboard__sensors_a86925c017a05fcbb248131d597262d87}} 
+\index{board\_sensors@{board\_sensors}!get\_board\_state@{get\_board\_state}}
+\index{get\_board\_state@{get\_board\_state}!board\_sensors@{board\_sensors}}
+\doxysubsubsection{\texorpdfstring{get\_board\_state()}{get\_board\_state()}}
+{\footnotesize\ttfamily std\+::vector$<$ std\+::vector$<$ bool $>$ $>$ board\+\_\+sensors\+::get\+\_\+board\+\_\+state (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Check the state of all squares on the board. 
+
+Moves around and checks the state of the board using hall effect sensor outputs \begin{DoxyReturn}{Returns}
+The board state 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classboard__sensors_adc44a6873f1e110fa3e8578c54e24870}\label{classboard__sensors_adc44a6873f1e110fa3e8578c54e24870}} 
+\index{board\_sensors@{board\_sensors}!get\_square\_state@{get\_square\_state}}
+\index{get\_square\_state@{get\_square\_state}!board\_sensors@{board\_sensors}}
+\doxysubsubsection{\texorpdfstring{get\_square\_state()}{get\_square\_state()}}
+{\footnotesize\ttfamily bool board\+\_\+sensors\+::get\+\_\+square\+\_\+state (\begin{DoxyParamCaption}\item[{int}]{x,  }\item[{int}]{y }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+returns the board state of specific square 
+
+Given the square supplied by the x and y parameters, use the hall effect sensor to check if the square is occupied or not 
+\begin{DoxyParams}{Parameters}
+{\em int} & x position of desired square \\
+\hline
+{\em int} & y position of desired square \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if piece is on that square and false if the square is empty 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classboard__sensors_adc72ba8b252007eeaefe67405fff2113}\label{classboard__sensors_adc72ba8b252007eeaefe67405fff2113}} 
+\index{board\_sensors@{board\_sensors}!print\_board\_state@{print\_board\_state}}
+\index{print\_board\_state@{print\_board\_state}!board\_sensors@{board\_sensors}}
+\doxysubsubsection{\texorpdfstring{print\_board\_state()}{print\_board\_state()}}
+{\footnotesize\ttfamily void board\+\_\+sensors\+::print\+\_\+board\+\_\+state (\begin{DoxyParamCaption}\item[{std\+::vector$<$ std\+::vector$<$ bool $>$ $>$}]{state }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+Prints current board state. 
+
+Cycles through each square and prints the value of that square 
+\begin{DoxyParams}{Parameters}
+{\em board\+State} & current board state \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Wizard\+Chess/lib/board\+\_\+sensors/board\+\_\+sensors.\+hpp\item 
+Wizard\+Chess/lib/board\+\_\+sensors/board\+\_\+sensors.\+cpp\end{DoxyCompactItemize}

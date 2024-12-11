@@ -1,0 +1,174 @@
+\hypertarget{classstockfish__bot}{}\doxysection{stockfish\+\_\+bot Class Reference}
+\label{classstockfish__bot}\index{stockfish\_bot@{stockfish\_bot}}
+
+
+Chess board\textquotesingle{}s API to the stockfish chess engine.  
+
+
+
+
+{\ttfamily \#include $<$stockfish\+\_\+bot.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classstockfish__bot_a1b29439d2953b0f6a0f888e8a5bdff85}{stockfish\+\_\+bot}} (std\+::string path, int depth)
+\begin{DoxyCompactList}\small\item\em Stockfish bot constructor. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classstockfish__bot_a9190d0691a7c8dcf8df52645aa04b8bb}{start}} ()
+\begin{DoxyCompactList}\small\item\em Starts the bot. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classstockfish__bot_a00c4759fff2beac04ffc6d20735acd8d}{stop}} ()
+\begin{DoxyCompactList}\small\item\em Stops the bot. \end{DoxyCompactList}\item 
+std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{classstockfish__bot_a9cb06f52d2fe9dfdb50b9a33fe28191b}{send\+Command}} (std\+::string command)
+\begin{DoxyCompactList}\small\item\em Sends a command to the stockfish chess engine. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classstockfish__bot_a8492172fad10b1db2a8ac740065246e8}{get\+Depth}} ()
+\begin{DoxyCompactList}\small\item\em Get the depth for move analysis. \end{DoxyCompactList}\item 
+std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{classstockfish__bot_a38a6bd96f052a901a2e5e0ad2d15065b}{get\+Move\+Sequence}} ()
+\begin{DoxyCompactList}\small\item\em Returns the current move sequence. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classstockfish__bot_a3aba2cdbeaaca42f3ce54c120aa31d06}{add\+Move}} (std\+::string move)
+\begin{DoxyCompactList}\small\item\em Adds a newly made move to the move sequence. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classstockfish__bot_a72e23c52fd9b80451d9dd0350f302094}\label{classstockfish__bot_a72e23c52fd9b80451d9dd0350f302094}} 
+{\bfseries $\sim$stockfish\+\_\+bot} ()
+\begin{DoxyCompactList}\small\item\em Stockfish bot destructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classstockfish__bot_a7bdb7dbeaa4e770b606100a309f2d9d3}\label{classstockfish__bot_a7bdb7dbeaa4e770b606100a309f2d9d3}} 
+std\+::string {\bfseries stockfish\+Path}
+\item 
+\mbox{\Hypertarget{classstockfish__bot_a5e3e68d03ba79ccb639c1467eeb3cc19}\label{classstockfish__bot_a5e3e68d03ba79ccb639c1467eeb3cc19}} 
+int {\bfseries depth}
+\item 
+\mbox{\Hypertarget{classstockfish__bot_a004c92137a8d9c4af1f97f65ef8f0577}\label{classstockfish__bot_a004c92137a8d9c4af1f97f65ef8f0577}} 
+int {\bfseries input\+Fd}
+\item 
+\mbox{\Hypertarget{classstockfish__bot_a11977e9c0b39da4536aad45c9fb263df}\label{classstockfish__bot_a11977e9c0b39da4536aad45c9fb263df}} 
+int {\bfseries output\+Fd}
+\item 
+\mbox{\Hypertarget{classstockfish__bot_ac975b8a197cc2c9501c8389a925029a6}\label{classstockfish__bot_ac975b8a197cc2c9501c8389a925029a6}} 
+pid\+\_\+t {\bfseries stockfish\+PID}
+\item 
+\mbox{\Hypertarget{classstockfish__bot_ae6b929f8099215a52d02714717560b85}\label{classstockfish__bot_ae6b929f8099215a52d02714717560b85}} 
+bool {\bfseries is\+Running}
+\item 
+\mbox{\Hypertarget{classstockfish__bot_a4b1b90813a0d02a939510bb14e99a7bf}\label{classstockfish__bot_a4b1b90813a0d02a939510bb14e99a7bf}} 
+std\+::vector$<$ std\+::string $>$ {\bfseries move\+\_\+sequence}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Chess board\textquotesingle{}s API to the stockfish chess engine. 
+
+\begin{DoxyAuthor}{Author}
+Rustam Mamedov
+\end{DoxyAuthor}
+The chess board requires access to a chess engine in order to make decisions on the next move. The class provides an API between the chess board and the stockfish binary, with bidirectional communication. The communication is established using the Unix fork and pipe. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classstockfish__bot_a1b29439d2953b0f6a0f888e8a5bdff85}\label{classstockfish__bot_a1b29439d2953b0f6a0f888e8a5bdff85}} 
+\index{stockfish\_bot@{stockfish\_bot}!stockfish\_bot@{stockfish\_bot}}
+\index{stockfish\_bot@{stockfish\_bot}!stockfish\_bot@{stockfish\_bot}}
+\doxysubsubsection{\texorpdfstring{stockfish\_bot()}{stockfish\_bot()}}
+{\footnotesize\ttfamily stockfish\+\_\+bot\+::stockfish\+\_\+bot (\begin{DoxyParamCaption}\item[{std\+::string}]{path,  }\item[{int}]{depth }\end{DoxyParamCaption})}
+
+
+
+Stockfish bot constructor. 
+
+Sets up the path for the stockfish executable Stockfish is an open source UCI chess engine \href{https://github.com/official-stockfish/Stockfish}{\texttt{ https\+://github.\+com/official-\/stockfish/\+Stockfish}} Bot is initially in the off state 
+\begin{DoxyParams}{Parameters}
+{\em file\+Path} & Path to the stockfish executable \\
+\hline
+{\em new\+Depth} & Depth of the bot. Represents difficulty (e.\+g. elo rating in chess) \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classstockfish__bot_a3aba2cdbeaaca42f3ce54c120aa31d06}\label{classstockfish__bot_a3aba2cdbeaaca42f3ce54c120aa31d06}} 
+\index{stockfish\_bot@{stockfish\_bot}!addMove@{addMove}}
+\index{addMove@{addMove}!stockfish\_bot@{stockfish\_bot}}
+\doxysubsubsection{\texorpdfstring{addMove()}{addMove()}}
+{\footnotesize\ttfamily void stockfish\+\_\+bot\+::add\+Move (\begin{DoxyParamCaption}\item[{std\+::string}]{move }\end{DoxyParamCaption})}
+
+
+
+Adds a newly made move to the move sequence. 
+
+Since stockfish does not keep state between calls, need to set the entire board state every call 
+\begin{DoxyParams}{Parameters}
+{\em move} & Newly made move \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classstockfish__bot_a8492172fad10b1db2a8ac740065246e8}\label{classstockfish__bot_a8492172fad10b1db2a8ac740065246e8}} 
+\index{stockfish\_bot@{stockfish\_bot}!getDepth@{getDepth}}
+\index{getDepth@{getDepth}!stockfish\_bot@{stockfish\_bot}}
+\doxysubsubsection{\texorpdfstring{getDepth()}{getDepth()}}
+{\footnotesize\ttfamily int stockfish\+\_\+bot\+::get\+Depth (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Get the depth for move analysis. 
+
+Depth indicates the number of moves the engine has looked ahead \begin{DoxyReturn}{Returns}
+Bot\textquotesingle{}s analysis depth 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classstockfish__bot_a38a6bd96f052a901a2e5e0ad2d15065b}\label{classstockfish__bot_a38a6bd96f052a901a2e5e0ad2d15065b}} 
+\index{stockfish\_bot@{stockfish\_bot}!getMoveSequence@{getMoveSequence}}
+\index{getMoveSequence@{getMoveSequence}!stockfish\_bot@{stockfish\_bot}}
+\doxysubsubsection{\texorpdfstring{getMoveSequence()}{getMoveSequence()}}
+{\footnotesize\ttfamily std\+::vector$<$ std\+::string $>$ stockfish\+\_\+bot\+::get\+Move\+Sequence (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Returns the current move sequence. 
+
+Since stockfish does not keep state between calls, need to get the entire board state every call \begin{DoxyReturn}{Returns}
+Ordered sequence of moves made so far 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classstockfish__bot_a9cb06f52d2fe9dfdb50b9a33fe28191b}\label{classstockfish__bot_a9cb06f52d2fe9dfdb50b9a33fe28191b}} 
+\index{stockfish\_bot@{stockfish\_bot}!sendCommand@{sendCommand}}
+\index{sendCommand@{sendCommand}!stockfish\_bot@{stockfish\_bot}}
+\doxysubsubsection{\texorpdfstring{sendCommand()}{sendCommand()}}
+{\footnotesize\ttfamily vector$<$ string $>$ stockfish\+\_\+bot\+::send\+Command (\begin{DoxyParamCaption}\item[{std\+::string}]{command }\end{DoxyParamCaption})}
+
+
+
+Sends a command to the stockfish chess engine. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em command} & The command to be sent to the engine \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Output from stockfish after executing the command 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classstockfish__bot_a9190d0691a7c8dcf8df52645aa04b8bb}\label{classstockfish__bot_a9190d0691a7c8dcf8df52645aa04b8bb}} 
+\index{stockfish\_bot@{stockfish\_bot}!start@{start}}
+\index{start@{start}!stockfish\_bot@{stockfish\_bot}}
+\doxysubsubsection{\texorpdfstring{start()}{start()}}
+{\footnotesize\ttfamily bool stockfish\+\_\+bot\+::start (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Starts the bot. 
+
+Communication is performed through Unix pipes. Processor is forked to execute the stockfish binary. First pipe used to send data from chess board to the bot. Second pipe used to send data from bot to chess board. \begin{DoxyReturn}{Returns}
+State of the bot (running/not running) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classstockfish__bot_a00c4759fff2beac04ffc6d20735acd8d}\label{classstockfish__bot_a00c4759fff2beac04ffc6d20735acd8d}} 
+\index{stockfish\_bot@{stockfish\_bot}!stop@{stop}}
+\index{stop@{stop}!stockfish\_bot@{stockfish\_bot}}
+\doxysubsubsection{\texorpdfstring{stop()}{stop()}}
+{\footnotesize\ttfamily void stockfish\+\_\+bot\+::stop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Stops the bot. 
+
+Close all pipes. Kill the stockfish process. Set bot to not running 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Wizard\+Chess/chess\+\_\+bot/stockfish\+\_\+bot.\+hpp\item 
+Wizard\+Chess/chess\+\_\+bot/stockfish\+\_\+bot.\+cpp\end{DoxyCompactItemize}

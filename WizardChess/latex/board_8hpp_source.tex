@@ -1,0 +1,55 @@
+\hypertarget{board_8hpp_source}{}\doxysection{board.\+hpp}
+\label{board_8hpp_source}\index{WizardChess/lib/board/board.hpp@{WizardChess/lib/board/board.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#ifndef\ WIZARD\_CHESS\_BOARD\_HPP}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#define\ WIZARD\_CHESS\_BOARD\_HPP}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}thc.h"{}}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}board\_sensors.hpp"{}}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classboard}{board}}\ \{}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keywordtype}{bool}\ verbose;}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \ \ \ \ std::string\ last\_move;}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordtype}{char}\ prev\_state[65];}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \ \ \ \ \mbox{\hyperlink{classthc_1_1_chess_rules}{thc::ChessRules}}\ cr;}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{comment}{//should\ init\ in\ constructor}}
+\DoxyCodeLine{00029\ \ \ \ \ \mbox{\hyperlink{classboard__sensors}{board\_sensors}}\ board\_magnet\_sensors\ =\ \mbox{\hyperlink{classboard__sensors}{board\_sensors}}(\textcolor{keyword}{false});}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{classboard}{board}}(\textcolor{keywordtype}{bool}\ verbose);}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classboard_a49770c108ab59bb7e3582e1827de0384}{make\_move}}(std::string);}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \ \ std::string\ \mbox{\hyperlink{classboard_ab8ac3e7dfa80a57d43a717f292388fb4}{get\_user\_move}}();}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classboard_a226c4bb9e3d4fa23928337ea9393a891}{print\_valid\_moves}}();}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{classboard_acda221dd82e3697783dde37b251a2635}{print\_board\_state}}();}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classboard_a3bec565e150875c26d71f4748228432b}{verify\_starting\_position}}(std::vector<std::vector<bool>>\ custom\_state\ =\ \{\});}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classboard_abb306aaf820e646d7ec8990a9cc135d7}{is\_valid\_move}}(std::string\ move);}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{classboard_a8691914f0814ca8706d4559bc1ca60ac}{is\_checkmate}}();}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \ \ \ \ std::string\ \mbox{\hyperlink{classboard_af620da7798b2e472197a7166539f92c4}{identify\_user\_move}}(std::vector<std::vector<bool>>\ middle,\ std::vector<std::vector<bool>>\ \textcolor{keyword}{final});}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keywordtype}{void}\ set\_board\_state(std::vector<bool>);}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \};}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//WIZARD\_CHESS\_BOARD\_HPP}}
+
+\end{DoxyCode}

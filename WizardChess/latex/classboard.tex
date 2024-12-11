@@ -1,0 +1,218 @@
+\hypertarget{classboard}{}\doxysection{board Class Reference}
+\label{classboard}\index{board@{board}}
+
+
+Board class, deals with the movement of the pieces, gets valid moves, verifies starting position of the chess board.  
+
+
+
+
+{\ttfamily \#include $<$board.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classboard_a3b7ae07934f330439b4dc4f79aa97144}{board}} (bool verbose)
+\begin{DoxyCompactList}\small\item\em Board class, deals with the movement of the pieces, gets valid moves, verifies starting position of the chess board. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classboard_a49770c108ab59bb7e3582e1827de0384}{make\+\_\+move}} (std\+::string)
+\begin{DoxyCompactList}\small\item\em Attempt to make a move. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{classboard_ab8ac3e7dfa80a57d43a717f292388fb4}{get\+\_\+user\+\_\+move}} ()
+\begin{DoxyCompactList}\small\item\em Gets user\textquotesingle{}s move from input. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classboard_a226c4bb9e3d4fa23928337ea9393a891}{print\+\_\+valid\+\_\+moves}} ()
+\begin{DoxyCompactList}\small\item\em Displays all valid moves available on the current board state. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classboard_acda221dd82e3697783dde37b251a2635}{print\+\_\+board\+\_\+state}} ()
+\begin{DoxyCompactList}\small\item\em the board board state to console \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classboard_a3bec565e150875c26d71f4748228432b}{verify\+\_\+starting\+\_\+position}} (std\+::vector$<$ std\+::vector$<$ bool $>$ $>$ custom\+\_\+state=\{\})
+\begin{DoxyCompactList}\small\item\em Verifies board is in correct starting position. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classboard_abb306aaf820e646d7ec8990a9cc135d7}{is\+\_\+valid\+\_\+move}} (std\+::string move)
+\begin{DoxyCompactList}\small\item\em Check if move supplied is a valid move on the board state. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{classboard_a8691914f0814ca8706d4559bc1ca60ac}{is\+\_\+checkmate}} ()
+\begin{DoxyCompactList}\small\item\em check if there is a checkmate on the board \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{classboard_af620da7798b2e472197a7166539f92c4}{identify\+\_\+user\+\_\+move}} (std\+::vector$<$ std\+::vector$<$ bool $>$ $>$ middle, std\+::vector$<$ std\+::vector$<$ bool $>$ $>$ final)
+\begin{DoxyCompactList}\small\item\em Calculates what move the user chose. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classboard_a9d0578c7520381ce045a45428736d06f}\label{classboard_a9d0578c7520381ce045a45428736d06f}} 
+void {\bfseries set\+\_\+board\+\_\+state} (std\+::vector$<$ bool $>$)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classboard_a700f9e2956dd8281da77939060927d50}\label{classboard_a700f9e2956dd8281da77939060927d50}} 
+\mbox{\hyperlink{classboard__sensors}{board\+\_\+sensors}} {\bfseries board\+\_\+magnet\+\_\+sensors} = \mbox{\hyperlink{classboard__sensors}{board\+\_\+sensors}}(false)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classboard_ac9c198132994664339a5148ae78f0cf8}\label{classboard_ac9c198132994664339a5148ae78f0cf8}} 
+bool {\bfseries verbose}
+\item 
+\mbox{\Hypertarget{classboard_a7428f1d7516fdbada48a094897443309}\label{classboard_a7428f1d7516fdbada48a094897443309}} 
+std\+::string {\bfseries last\+\_\+move}
+\item 
+\mbox{\Hypertarget{classboard_a7d70b491e295c0af313e495752dcbb68}\label{classboard_a7d70b491e295c0af313e495752dcbb68}} 
+char {\bfseries prev\+\_\+state} \mbox{[}65\mbox{]}
+\item 
+\mbox{\Hypertarget{classboard_af195dd1b156927c6fc02fb1ac320c6d9}\label{classboard_af195dd1b156927c6fc02fb1ac320c6d9}} 
+\mbox{\hyperlink{classthc_1_1_chess_rules}{thc\+::\+Chess\+Rules}} {\bfseries cr}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Board class, deals with the movement of the pieces, gets valid moves, verifies starting position of the chess board. 
+
+Does all activities related to the board, board states and moves. Uses functions from thc.\+cpp to complete chess functions. \begin{DoxyAuthor}{Authors}
+Jarvis, Rustam, Owen, Hassan, Dayton 
+\end{DoxyAuthor}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classboard_a3b7ae07934f330439b4dc4f79aa97144}\label{classboard_a3b7ae07934f330439b4dc4f79aa97144}} 
+\index{board@{board}!board@{board}}
+\index{board@{board}!board@{board}}
+\doxysubsubsection{\texorpdfstring{board()}{board()}}
+{\footnotesize\ttfamily board\+::board (\begin{DoxyParamCaption}\item[{bool}]{verbose }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Board class, deals with the movement of the pieces, gets valid moves, verifies starting position of the chess board. 
+
+all activities related to the board, board states and moves. Uses functions from thc.\+cpp to complete chess functions. \begin{DoxyAuthor}{Authors}
+Jarvis, Rustam, Owen, Hassan, Dayton
+\end{DoxyAuthor}
+Board constructor
+
+Sets verbose to the supplied value from the call, sets last move to empty to define it, and fill the board
+
+
+\begin{DoxyParams}{Parameters}
+{\em verbose} & for debugging, prints additional information to the console \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classboard_ab8ac3e7dfa80a57d43a717f292388fb4}\label{classboard_ab8ac3e7dfa80a57d43a717f292388fb4}} 
+\index{board@{board}!get\_user\_move@{get\_user\_move}}
+\index{get\_user\_move@{get\_user\_move}!board@{board}}
+\doxysubsubsection{\texorpdfstring{get\_user\_move()}{get\_user\_move()}}
+{\footnotesize\ttfamily std\+::string board\+::get\+\_\+user\+\_\+move (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Gets user\textquotesingle{}s move from input. 
+
+Asks for player\textquotesingle{}s move and receives it through input after displaying a list of valid moves \begin{DoxyReturn}{Returns}
+User\textquotesingle{}s move as a string 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classboard_af620da7798b2e472197a7166539f92c4}\label{classboard_af620da7798b2e472197a7166539f92c4}} 
+\index{board@{board}!identify\_user\_move@{identify\_user\_move}}
+\index{identify\_user\_move@{identify\_user\_move}!board@{board}}
+\doxysubsubsection{\texorpdfstring{identify\_user\_move()}{identify\_user\_move()}}
+{\footnotesize\ttfamily std\+::string board\+::identify\+\_\+user\+\_\+move (\begin{DoxyParamCaption}\item[{std\+::vector$<$ std\+::vector$<$ bool $>$ $>$}]{middle,  }\item[{std\+::vector$<$ std\+::vector$<$ bool $>$ $>$}]{final }\end{DoxyParamCaption})}
+
+
+
+Calculates what move the user chose. 
+
+Identify a move that was made by the player in algebraic notation i.\+e. \mbox{[}old\+\_\+position\mbox{]}\mbox{[}new\+\_\+position\mbox{]} 
+\begin{DoxyParams}{Parameters}
+{\em vector} & original board state \\
+\hline
+{\em vector} & Final board state \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the move user chose 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classboard_a8691914f0814ca8706d4559bc1ca60ac}\label{classboard_a8691914f0814ca8706d4559bc1ca60ac}} 
+\index{board@{board}!is\_checkmate@{is\_checkmate}}
+\index{is\_checkmate@{is\_checkmate}!board@{board}}
+\doxysubsubsection{\texorpdfstring{is\_checkmate()}{is\_checkmate()}}
+{\footnotesize\ttfamily bool board\+::is\+\_\+checkmate (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+check if there is a checkmate on the board 
+
+Checks the board state to see if the board position has a checkmate \begin{DoxyReturn}{Returns}
+Returns true if there is a checkmate, false otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classboard_abb306aaf820e646d7ec8990a9cc135d7}\label{classboard_abb306aaf820e646d7ec8990a9cc135d7}} 
+\index{board@{board}!is\_valid\_move@{is\_valid\_move}}
+\index{is\_valid\_move@{is\_valid\_move}!board@{board}}
+\doxysubsubsection{\texorpdfstring{is\_valid\_move()}{is\_valid\_move()}}
+{\footnotesize\ttfamily bool board\+::is\+\_\+valid\+\_\+move (\begin{DoxyParamCaption}\item[{std\+::string}]{move }\end{DoxyParamCaption})}
+
+
+
+Check if move supplied is a valid move on the board state. 
+
+Uses the generated valid move list to compare if given move is valid, and legal 
+\begin{DoxyParams}{Parameters}
+{\em String} & move supplied to be checked \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if move is legal, false if illegal 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classboard_a49770c108ab59bb7e3582e1827de0384}\label{classboard_a49770c108ab59bb7e3582e1827de0384}} 
+\index{board@{board}!make\_move@{make\_move}}
+\index{make\_move@{make\_move}!board@{board}}
+\doxysubsubsection{\texorpdfstring{make\_move()}{make\_move()}}
+{\footnotesize\ttfamily bool board\+::make\+\_\+move (\begin{DoxyParamCaption}\item[{std\+::string}]{move }\end{DoxyParamCaption})}
+
+
+
+Attempt to make a move. 
+
+Given a move as a string, checks if it is valid, then changes the board state if the move is valid and returns true. If it is an invalid move this returns false 
+\begin{DoxyParams}{Parameters}
+{\em String} & move to be taken by current player \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Returns true if successful and valid move, returns false if invalid move. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classboard_acda221dd82e3697783dde37b251a2635}\label{classboard_acda221dd82e3697783dde37b251a2635}} 
+\index{board@{board}!print\_board\_state@{print\_board\_state}}
+\index{print\_board\_state@{print\_board\_state}!board@{board}}
+\doxysubsubsection{\texorpdfstring{print\_board\_state()}{print\_board\_state()}}
+{\footnotesize\ttfamily void board\+::print\+\_\+board\+\_\+state (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+the board board state to console 
+
+Uses the To\+Debug\+Str in tch.\+cpp to display all squares and pieces on the chess board \mbox{\Hypertarget{classboard_a226c4bb9e3d4fa23928337ea9393a891}\label{classboard_a226c4bb9e3d4fa23928337ea9393a891}} 
+\index{board@{board}!print\_valid\_moves@{print\_valid\_moves}}
+\index{print\_valid\_moves@{print\_valid\_moves}!board@{board}}
+\doxysubsubsection{\texorpdfstring{print\_valid\_moves()}{print\_valid\_moves()}}
+{\footnotesize\ttfamily void board\+::print\+\_\+valid\+\_\+moves (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Displays all valid moves available on the current board state. 
+
+Uses Gen\+Legal\+Move\+List to find all possible moves that the player can legally play on the current turn. \mbox{\Hypertarget{classboard_a3bec565e150875c26d71f4748228432b}\label{classboard_a3bec565e150875c26d71f4748228432b}} 
+\index{board@{board}!verify\_starting\_position@{verify\_starting\_position}}
+\index{verify\_starting\_position@{verify\_starting\_position}!board@{board}}
+\doxysubsubsection{\texorpdfstring{verify\_starting\_position()}{verify\_starting\_position()}}
+{\footnotesize\ttfamily bool board\+::verify\+\_\+starting\+\_\+position (\begin{DoxyParamCaption}\item[{std\+::vector$<$ std\+::vector$<$ bool $>$ $>$}]{custom\+\_\+state = {\ttfamily \{\}} }\end{DoxyParamCaption})}
+
+
+
+Verifies board is in correct starting position. 
+
+Compares supplied game state to the expected back two files for both sides being filled and if so returns true. 
+\begin{DoxyParams}{Parameters}
+{\em Vector} & current board state \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True or false depending on board state 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Wizard\+Chess/lib/board/board.\+hpp\item 
+Wizard\+Chess/lib/board/board.\+cpp\end{DoxyCompactItemize}
