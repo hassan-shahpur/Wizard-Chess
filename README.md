@@ -8,7 +8,7 @@ Wizard Chess is an interactive chessboard that combines human gameplay with auto
 
 This project was developped entirely in C++
 
-The project utilized a gantry system constructed from 20x20 aluminum extrusions, timing belts, stepper motors, and custom 3D-printed parts. Hall sensors were integrated to detect the positions of the chess pieces, while an Arduino microcontroller controlled the stepper motors and electromagnets responsible for automated movements. Inspired by Greg06’s Automated Chessboard
+The project utilized a gantry system constructed from 20x20 aluminum extrusions, timing belts, stepper motors, and custom 3D-printed parts. Hall sensors were integrated to detect the positions of the chess pieces, while an Arduino microcontroller controlled the stepper motors and electromagnets responsible for automated movements. Inspired by Greg06’s Automated Chessboard.
 
 Here are some of the videos showcasing the project:
 
